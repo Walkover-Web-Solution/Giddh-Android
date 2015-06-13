@@ -1,0 +1,136 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+    >
+
+
+    <ScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footer"
+        android:scrollbarStyle="outsideOverlay"
+        tools:context=".MainActivity">
+
+        <LinearLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:hint="Date"
+                android:textCursorDrawable="@drawable/cursur_color"
+                app:met_baseColor="@color/black"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/orange_default_color"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Amount"
+                android:inputType="numberDecimal"
+                android:textCursorDrawable="@drawable/cursur_color"
+                app:met_baseColor="@color/black"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/orange_default_color"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/for_val"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="For"
+                android:textCursorDrawable="@drawable/cursur_color"
+                app:met_baseColor="@color/black"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/orange_default_color"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/via"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Via"
+                android:textCursorDrawable="@drawable/cursur_color"
+                app:met_baseColor="@color/black"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/orange_default_color"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/trip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Trip (optional)"
+                    android:textCursorDrawable="@drawable/cursur_color"
+                    app:met_baseColor="@color/black"
+                    app:met_floatingLabel="highlight"
+                    app:met_primaryColor="@color/orange_default_color"/>
+
+                <ImageButton
+                    android:id="@+id/clear"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/clear"
+                    android:padding="10dp"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:textCursorDrawable="@drawable/cursur_color"
+                app:met_baseColor="@color/black"
+                app:met_clearButton="true"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="30"
+                app:met_primaryColor="@color/orange_default_color"
+                />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/orange_footer_head"
+        android:gravity="center_horizontal"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/done_entry"/>
+
+        <ImageButton
+            android:id="@+id/cancel"
+            style="@android:style/ButtonBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/cancel_entry"/>
+    </RelativeLayout>
+</RelativeLayout>

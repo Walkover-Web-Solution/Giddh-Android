@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@android:color/secondary_text_dark_nodisable" android:state_selected="true"></item>
+    <item android:drawable="@android:color/tertiary_text_light" android:state_pressed="true"></item>
+
+
+</selector>

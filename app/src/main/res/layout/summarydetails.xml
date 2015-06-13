@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fab="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/bg_all"
+              android:orientation="vertical">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 xmlns:fab="http://schemas.android.com/apk/res-auto"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent">
+
+
+        <ExpandableListView
+            android:id="@+id/details_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:childDivider="@color/divider_color"
+            android:divider="#9b9999"
+            android:dividerHeight="0.1dp"
+            android:fadingEdge="none"
+            android:listSelector="@drawable/list_selector_common"
+            android:transcriptMode="alwaysScroll">
+        </ExpandableListView>
+
+        <TextView
+            android:id="@+id/emp_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/alert"
+            android:gravity="center_horizontal"
+            android:text="No transaction :("
+            android:textColor="@color/half_black"
+            android:textSize="35dp"
+            android:visibility="gone"
+            />
+
+        <com.getbase.floatingactionbutton.AddFloatingActionButton
+            android:id="@+id/add_transaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:visibility="gone"
+            fab:fab_addButtonColorPressed="@color/white_pressed"
+            fab:fab_colorNormal="@color/orange_default_color"
+            fab:fab_colorPressed="@color/orange_footer_head"
+            />
+    </FrameLayout>
+
+
+</LinearLayout>

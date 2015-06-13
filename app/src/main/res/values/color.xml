@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brown_balance">#A29790</color>
+    <color name="dialogbox_bg">#1F1F1F</color>
+    <color name="dialogbox_optional">#474747</color>
+    <color name="light_black">#4D000000</color>
+    <color name="action_bar_color">#db650b</color>
+    <color name="fb_login_color">#5D79B4</color>
+    <color name="blue_group">#4490ed</color>
+    <color name="black_name">#272422</color>
+    <color name="yellow_account_name">#E09F36</color>
+    <color name="account_bal_orange">#FF8B42</color>
+    <color name="yellow_receiving">#F6D592</color>
+    <color name="yellow_foot">#f4c25d</color>
+    <color name="orange_foot">#e26a46</color>
+    <color name="orange_givingmoney">#E57C5C</color>
+    <color name="red">#f2716e</color>
+    <color name="transparent">#00000000</color>
+    <color name="orange_default_color">#e6673d</color>
+    <color name="orange_footer_head">#CD7051</color>
+    <color name="black_head">#717171</color>
+    <color name="divider_color">#eaeaea</color>
+    <color name="white_arc">#faf0e6</color>
+    <color name="bg_all">#E2DACE</color>
+    <color name="black_sub_head">#c1c1c1</color>
+    <color name="google_login">#dd4c39</color>
+    <color name="whitish_gray">#F5F5F5</color>.
+    <color name="orange_border">#ffa200</color>
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="background">#e5e5e5</color>
+    <color name="half_black">#808080</color>
+
+    <color name="white">#fafafa</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
+    <color name="blue_semi_transparent">#805677fc</color>
+    <color name="blue_semi_transparent_pressed">#80738ffe</color>
+    <color name="blue_mat">#03A9F4</color>
+    <color name="grey_footer">#324D5B</color>
+    <color name="red_mat">#F44336</color>
+    <color name="green_mat">#0B8B8A</color>
+    <color name="selection_color">#D8D8D8</color>
+    <color name="tumblr_primary">#36465D</color>
+
+</resources>

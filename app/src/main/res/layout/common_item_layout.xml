@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:id="@+id/contact_image"
+        android:background="@drawable/email_list"
+        android:layout_alignTop="@+id/name_user"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name_user"
+        android:layout_toRightOf="@+id/contact_image"
+        android:text="Rakshit Soni"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:singleLine="true"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/email_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/contact_image"
+        android:text="rakshitsoni02@gmail.com"
+        android:layout_marginLeft="10dp"
+        android:textSize="18dp"
+        android:singleLine="true"
+        android:textColor="@color/half_black"
+        android:layout_below="@+id/name_user" />
+
+</RelativeLayout>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_all">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="5"
+                android:background="@drawable/border_ed_common"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.Giddh.commonUtilities.NonScrollListView
+                    android:id="@+id/list_assets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/date_fromto"
+                    android:dividerHeight="0dp"
+                    android:listSelector="@drawable/list_selector_common"/>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/b_acc"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/amount_assets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="TOTAL"
+                    android:textColor="@color/material_blue_grey_950"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/amount_assets_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="0.0"
+                    android:textColor="@color/orange_footer_head"
+                    android:textSize="18dp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/list2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="5"
+                android:background="@drawable/border_ed_common"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.Giddh.commonUtilities.NonScrollListView
+                    android:id="@+id/list_liab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/date_fromto"
+                    android:dividerHeight="0dp"
+                    android:listSelector="@drawable/list_selector_common"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/b_acc"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/amount_liab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="TOTAL"
+                    android:textColor="@color/material_blue_grey_950"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/amount_liab_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="0.0"
+                    android:textColor="@color/orange_footer_head"
+                    android:textSize="18dp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hand"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_ed_common"
+                android:padding="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/expe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text=" Expense"
+                        android:textColor="@color/material_blue_grey_950"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/expense_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="21812.022"
+                        android:textColor="@color/button_material_dark"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/income"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/expe"
+                    android:layout_marginTop="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text=" Income"
+                        android:textColor="@color/material_blue_grey_950"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/income_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="21812.021"
+                        android:textColor="@color/button_material_dark"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/expenses"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/total_amount_in_ex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="TOTAL"
+                    android:textColor="@color/orange_footer_head"
+                    android:textSize="18dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/total_amount_in_ex_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="0.0"
+                    android:textColor="@color/orange_footer_head"
+                    android:textSize="18dp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

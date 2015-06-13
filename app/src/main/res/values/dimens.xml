@@ -1,0 +1,19 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="padding_layout">15dp</dimen>
+    <dimen name="stroke_width">1.0dip</dimen>
+    <dimen name="textsize_em">15sp</dimen>
+    <dimen name="image_height">55dp</dimen>
+    <!-- email header -->
+    <dimen name="email_header_text_size">20sp</dimen>
+
+
+
+    <dimen name="layout_radius_tumblr">135dp</dimen>
+    <dimen name="item_font_size_tumblr">30sp</dimen>
+    <dimen name="layout_child_offset_tumblr">100dp</dimen>
+    <dimen name="item_circle_size_tumblr">70dp</dimen>
+    <dimen name="item_font_size_path">18sp</dimen>
+</resources>

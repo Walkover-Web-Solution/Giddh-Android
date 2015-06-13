@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/brown_balance">
+
+    <RelativeLayout
+        android:id="@+id/ask_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/footer"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:id="@+id/receving_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:background="@color/yellow_receiving"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:text="Receiving Money"
+                    android:textColor="@android:color/black"
+                    android:textSize="25dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/giving_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:background="@color/orange_givingmoney"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:text="Giving Money"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/multiple_actions_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="16dp"
+            fab:fab_addButtonColorNormal="@color/white"
+            fab:fab_addButtonColorPressed="@color/white_pressed"
+            fab:fab_addButtonPlusIconColor="@color/half_black"
+            fab:fab_addButtonSize="mini"
+            fab:fab_expandDirection="left">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_addButtonSize="mini"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_colorPressed="@color/white_pressed"
+                fab:fab_icon="@drawable/add_trip"
+                fab:fab_size="mini"
+                fab:fab_title="Create New Trip" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_colorPressed="@color/white_pressed"
+                fab:fab_icon="@drawable/summary_icon"
+                fab:fab_size="mini"
+                fab:fab_title="Touch to show Summary" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_colorPressed="@color/white_pressed"
+                fab:fab_icon="@drawable/setting_icon"
+                fab:fab_size="mini"
+
+                fab:fab_title="Touch to show Summary" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_colorPressed="@color/white_pressed"
+
+                fab:fab_icon="@drawable/company"
+                fab:fab_size="mini"
+                fab:fab_title="Touch to show Summary" />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/flag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:visibility="gone">
+
+
+        <RelativeLayout
+            android:id="@+id/head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/select_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="left|center_vertical"
+                android:hint="Enter Date"
+                android:inputType="date"
+                android:textColor="#727272"
+                android:textColorHint="@android:color/white"
+                android:textSize="19sp" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/sign"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_below="@+id/head"
+            android:layout_margin="10dp"
+            android:background="@drawable/ed_amount_border"
+            android:gravity="center_vertical"
+            android:textColor="#727272"
+            android:textSize="20sp" />
+
+
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/head"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/sign"
+            android:background="@drawable/border_ed_common"
+            android:hint="Enter amount here.."
+            android:inputType="numberDecimal"
+            android:maxLength="10"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:singleLine="true"
+            android:textColor="#727272"
+            android:textColorHint="#727272"
+            android:textSize="20sp" />
+
+        <GridView
+            android:id="@+id/flags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/amount"
+            android:cacheColorHint="#00000000"
+            android:horizontalSpacing="1dp"
+            android:numColumns="3"
+            android:scrollingCache="false"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="15sp">
+
+        </GridView>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/grids"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_above="@+id/description"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:id="@+id/med"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="VIA"
+                android:paddingLeft="10dp"
+                android:textColor="@color/white"
+                android:background="@color/half_black"
+                android:textSize="18dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="left"/>
+
+            <GridView
+                android:id="@+id/medium_trans"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/from"
+                android:horizontalSpacing="1dp"
+
+                android:numColumns="3"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:stretchMode="columnWidth"
+                android:choiceMode="singleChoice"
+                android:adjustViewBounds="true"
+                android:verticalSpacing="15sp"></GridView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/trips"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/trips_asso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/half_black"
+                android:textColor="@color/white"
+                android:layout_marginRight="10dp"
+                android:text="Share With"
+                android:paddingLeft="10dp"
+                android:textSize="18dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="left"/>
+
+            <GridView
+                android:id="@+id/trips_saved"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/trips_asso"
+                android:horizontalSpacing="1dp"
+
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="15sp"></GridView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/border_ed_common"
+        android:hint="Description if any..."
+        android:gravity="center_vertical"
+        android:textColor="@color/material_blue_grey_950"
+        android:textSize="22dp"
+        android:layout_margin="10dp"
+        android:layout_above="@+id/footer"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/orange_footer_head"
+        android:padding="10dp"
+        android:id="@+id/footer"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/save"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/done_entry"/>
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:id="@+id/cancel"
+            android:layout_height="35dp"
+            style="@android:style/ButtonBar"
+            android:layout_centerInParent="true"
+            android:background="@drawable/cancel_entry"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

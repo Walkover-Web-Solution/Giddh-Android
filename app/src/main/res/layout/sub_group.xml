@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_all"
+                android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date_head">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="SUB GROUPS"
+                android:gravity="left"
+                android:padding="10dp"
+                android:textSize="14dp"
+
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/half_black"
+                android:textColor="@android:color/black"/>
+
+            <com.Giddh.commonUtilities.NonScrollListView
+                android:id="@+id/list_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusableInTouchMode="false"></com.Giddh.commonUtilities.NonScrollListView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="ACCOUNTS"
+                android:textSize="14dp"
+                android:background="@color/half_black"
+                android:textColor="@android:color/black"/>
+
+            <com.Giddh.commonUtilities.NonScrollListView
+                android:id="@+id/list_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/list_group"></com.Giddh.commonUtilities.NonScrollListView>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
