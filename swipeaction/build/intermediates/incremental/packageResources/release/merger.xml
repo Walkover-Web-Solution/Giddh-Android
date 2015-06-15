@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\Rakshit\studio_projects\Giddh\swipeaction\src\main\res"/><source path="C:\Rakshit\studio_projects\Giddh\swipeaction\build\generated\res\rs\release"/><source path="C:\Rakshit\studio_projects\Giddh\swipeaction\build\generated\res\generated\release"/></dataSet><dataSet config="release"><source path="C:\Rakshit\studio_projects\Giddh\swipeaction\src\release\res"/></dataSet><mergedItems/></merger>
