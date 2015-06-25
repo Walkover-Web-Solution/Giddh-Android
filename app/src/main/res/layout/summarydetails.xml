@@ -16,10 +16,9 @@
             android:id="@+id/details_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:childDivider="@color/divider_color"
-            android:divider="#9b9999"
+            android:childDivider="#9b9999"
+            android:divider="#C7C7C9"
             android:dividerHeight="0.1dp"
-            android:fadingEdge="none"
             android:listSelector="@drawable/list_selector_common"
             android:transcriptMode="alwaysScroll">
         </ExpandableListView>

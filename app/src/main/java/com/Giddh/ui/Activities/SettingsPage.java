@@ -1,30 +1,42 @@
 package com.Giddh.ui.Activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.Giddh.R;
-import com.Giddh.adapters.FlagTypAdapter;
 import com.Giddh.commonUtilities.Apis;
+import com.Giddh.commonUtilities.ClipRevealFrame;
 import com.Giddh.commonUtilities.CommonUtility;
+import com.Giddh.commonUtilities.FontTextView;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.commonUtilities.VariableClass;
 import com.Giddh.dtos.Accounts;
-import com.Giddh.dtos.TripInfo;
+import com.Giddh.util.AnimatorUtils;
 import com.Giddh.util.UserService;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.ogaclejapan.arclayout.ArcLayout;
 import com.splunk.mint.Mint;
 
 import org.json.JSONArray;
@@ -33,17 +45,29 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SettingsPage extends AppCompatActivity implements View.OnClickListener {
-    TextView tvTrips, tvBankAccounts, tvSyncEntries, tvProfileName, tvCreditCard,
+    FontTextView tvTrips, tvBankAccounts, tvSyncEntries, tvProfileName, tvCreditCard,
             tvCurrency, tvaccounts, subaccmain,
             subcurrency, subSync, subtrips, subaccounts, subprofilename, subcard;
     Context ctx;
     UserService userService;
     RelativeLayout accounts1, logout1;
     int count;
+    FrameLayout mRootLayout;
+    ClipRevealFrame mMenuLayout;
+    ImageButton revealButton;
+    ArcLayout mArcLayout;
+    Button mCenterItem;
+    Boolean menu = false;
+    RelativeLayout mRootView;
+    ActionBar actionBar;
+    LinearLayout home, transactions, trip, summary;
+    private static long back_pressed;
     ArrayList<Accounts> accounts, cat;
-    android.support.v7.app.ActionBar actionBar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,22 +77,42 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
         Mint.initAndStartSession(ctx, CommonUtility.BUGSENSEID);
         Mint.setUserIdentifier(Prefs.getEmailId(ctx));
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+        View mCustomView = mInflater.inflate(R.layout.custom_action_bar, null);
+        FontTextView mTitleTextView = (FontTextView) mCustomView.findViewById(R.id.title_text);
+        mTitleTextView.setText("Settings");
+        final ImageButton imageButton = (ImageButton) mCustomView
+                .findViewById(R.id.imageView1);
+        final FrameLayout btnlayout = (FrameLayout) mCustomView
+                .findViewById(R.id.button_layout);
+        imageButton.setBackgroundResource(R.drawable.menu_actionbar);
+        actionBar.setCustomView(mCustomView);
+        actionBar.setDisplayShowCustomEnabled(true);
+        trip = (LinearLayout) findViewById(R.id.trip_button);
+        home = (LinearLayout) findViewById(R.id.home_button);
+        transactions = (LinearLayout) findViewById(R.id.transaction_button);
+        summary = (LinearLayout) findViewById(R.id.summary_button);
+        mRootLayout = (FrameLayout) findViewById(R.id.root_layout);
+        mMenuLayout = (ClipRevealFrame) findViewById(R.id.menu_layout);
+        mArcLayout = (ArcLayout) findViewById(R.id.arc_layout);
+        revealButton = (ImageButton) findViewById(R.id.reveal_button);
+        mCenterItem = (Button) findViewById(R.id.center_item);
+        mRootView = (RelativeLayout) findViewById(R.id.root);
         accounts = new ArrayList<>();
         cat = new ArrayList<>();
         userService = UserService.getUserServiceInstance(ctx);
-        actionBar.setTitle(CommonUtility.getfonttext("Settings", SettingsPage.this));
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));
-        tvTrips = (TextView) findViewById(R.id.aso_trip);
-        tvBankAccounts = (TextView) findViewById(R.id.add_bnk);
-        tvCreditCard = (TextView) findViewById(R.id.credit_card);
-        tvCurrency = (TextView) findViewById(R.id.currency);
+      /*  actionBar.setTitle(CommonUtility.getfonttext("Settings", SettingsPage.this));
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));*/
+        tvTrips = (FontTextView) findViewById(R.id.aso_trip);
+        tvBankAccounts = (FontTextView) findViewById(R.id.add_bnk);
+        tvCreditCard = (FontTextView) findViewById(R.id.credit_card);
+        tvCurrency = (FontTextView) findViewById(R.id.currency);
         tvCurrency.setOnClickListener(this);
-        subcurrency = (TextView) findViewById(R.id.subcurrency);
-        tvaccounts = (TextView) findViewById(R.id.accounts);
-        subaccmain = (TextView) findViewById(R.id.subaccount);
+        subcurrency = (FontTextView) findViewById(R.id.subcurrency);
+        tvaccounts = (FontTextView) findViewById(R.id.accounts);
+        subaccmain = (FontTextView) findViewById(R.id.subaccount);
         accounts1 = (RelativeLayout) findViewById(R.id.accounts1);
         logout1 = (RelativeLayout) findViewById(R.id.logout1);
         subaccmain.setText("" + getfilteredlist().size());
@@ -106,13 +150,71 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
                 }).show();
             }
         });
-        tvSyncEntries = (TextView) findViewById(R.id.sync);
-        subSync = (TextView) findViewById(R.id.subSync);
-        tvProfileName = (TextView) findViewById(R.id.change_name);
+        btnlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRevealClick(view);
+                if (!menu) {
+                    menu = true;
+                    imageButton.setBackgroundResource(R.drawable.close_white);
+                    mRootView.setVisibility(View.GONE);
+                } else {
+                    menu = false;
+                    mRootView.setVisibility(View.VISIBLE);
+                    imageButton.setBackgroundResource(R.drawable.menu_actionbar);
+                }
+            }
+        });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent home = new Intent(ctx, HomeActivity.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(home);
+                SettingsPage.this.finish();
+            }
+        });
+        trip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userService.getallTripInfo(null, true).size() > 0) {
+                    Intent multi = new Intent(ctx, SavedTrips.class);
+                    multi.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(multi);
+                    SettingsPage.this.finish();
+                } else {
+                    Intent intent = new Intent(ctx, TripHome.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+                }
+            }
+        });
+        summary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent home = new Intent(ctx, SummaryInfo.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(home);
+                SettingsPage.this.finish();
+            }
+        });
+        transactions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent home = new Intent(ctx, AskType.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(home);
+                SettingsPage.this.finish();
+            }
+        });
+        tvSyncEntries = (FontTextView) findViewById(R.id.sync);
+        subSync = (FontTextView) findViewById(R.id.subSync);
+        tvProfileName = (FontTextView) findViewById(R.id.change_name);
         subSync.setText("Last updated: " + Prefs.getUpdateDate(ctx));
-        subprofilename = (TextView) findViewById(R.id.subprofilename);
+        subprofilename = (FontTextView) findViewById(R.id.subprofilename);
         subprofilename.setText(Prefs.getEmailId(ctx));
-        subaccounts = (TextView) findViewById(R.id.subaccounts);
+        subaccounts = (FontTextView) findViewById(R.id.subaccounts);
         tvSyncEntries.setOnClickListener(this);
         tvBankAccounts.setOnClickListener(this);
         tvTrips.setOnClickListener(this);
@@ -120,10 +222,10 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
         tvProfileName.setOnClickListener(this);
         accounts = userService.getcountacc("3", "Cash");
         subaccounts.setText("" + accounts.size());
-        subcard = (TextView) findViewById(R.id.subcard);
+        subcard = (FontTextView) findViewById(R.id.subcard);
         accounts = userService.getcountacc("2", "Loan");
         subcard.setText("" + accounts.size());
-        subtrips = (TextView) findViewById(R.id.subtrips);
+        subtrips = (FontTextView) findViewById(R.id.subtrips);
         count = userService.getcount("trip_info");
         subtrips.setText("" + count);
         tvCurrency.setText(Prefs.getCurrency(ctx));
@@ -260,5 +362,169 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
             }
         }
         return temp;
+    }
+
+    void onRevealClick(View v) {
+        int x = (v.getLeft() + v.getRight()) / 2;
+        int y = (v.getTop() + v.getBottom()) / 2;
+        float radiusOfFab = 1f * v.getWidth() / 2f;
+        float radiusFromFabToRoot = (float) Math.hypot(
+                Math.max(x, mRootLayout.getWidth() - x),
+                Math.max(y, mRootLayout.getHeight() - y));
+        if (v.isSelected()) {
+            disableChilds();
+            hideMenu(x, y, radiusFromFabToRoot, radiusOfFab);
+//            revealButton.setImageResource(0);
+        } else {
+            enableChilds();
+            showMenu(x, y, radiusOfFab, radiusFromFabToRoot);
+            //  revealButton.setImageResource(R.drawable.close);
+        }
+        v.setSelected(!v.isSelected());
+    }
+
+    void disableChilds() {
+       /* for (int i = 0; i < mArcLayout.getChildCount(); i++) {
+            View child = mArcLayout.getChildAt(i);
+            child.setClickable(false);
+        }*/
+    }
+
+    void enableChilds() {
+       /* for (int i = 0; i < mArcLayout.getChildCount(); i++) {
+            View child = mArcLayout.getChildAt(i);
+            child.setClickable(true);
+        }*/
+    }
+
+    private void showMenu(int cx, int cy, float startRadius, float endRadius) {
+        mMenuLayout.setVisibility(View.VISIBLE);
+        List<Animator> animList = new ArrayList<>();
+        Animator revealAnim = createCircularReveal(mMenuLayout, cx, cy, startRadius, endRadius);
+        revealAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+        revealAnim.setDuration(200);
+        animList.add(revealAnim);
+        animList.add(createShowItemAnimator(mCenterItem));
+        for (int i = 0, len = mArcLayout.getChildCount(); i < len; i++) {
+            animList.add(createShowItemAnimator(mArcLayout.getChildAt(i)));
+        }
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.playSequentially(animList);
+        animSet.start();
+    }
+
+    private void hideMenu(int cx, int cy, float startRadius, float endRadius) {
+        List<Animator> animList = new ArrayList<>();
+        for (int i = mArcLayout.getChildCount() - 1; i >= 0; i--) {
+            animList.add(createHideItemAnimator(mArcLayout.getChildAt(i)));
+        }
+        animList.add(createHideItemAnimator(mCenterItem));
+        Animator revealAnim = createCircularReveal(mMenuLayout, cx, cy, startRadius, endRadius);
+        revealAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+        revealAnim.setDuration(100);
+        revealAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mMenuLayout.setVisibility(View.INVISIBLE);
+            }
+        });
+        animList.add(revealAnim);
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.playSequentially(animList);
+        animSet.start();
+    }
+
+    private Animator createShowItemAnimator(View item) {
+        float dx = mCenterItem.getX() - item.getX();
+        float dy = mCenterItem.getY() - item.getY();
+        item.setScaleX(0f);
+        item.setScaleY(0f);
+        item.setTranslationX(dx);
+        item.setTranslationY(dy);
+        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+                item,
+                AnimatorUtils.scaleX(0f, 1f),
+                AnimatorUtils.scaleY(0f, 1f),
+                AnimatorUtils.translationX(dx, 0f),
+                AnimatorUtils.translationY(dy, 0f)
+        );
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setDuration(50);
+        return anim;
+    }
+
+    private Animator createHideItemAnimator(final View item) {
+        final float dx = mCenterItem.getX() - item.getX();
+        final float dy = mCenterItem.getY() - item.getY();
+        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+                item,
+                AnimatorUtils.scaleX(1f, 0f),
+                AnimatorUtils.scaleY(1f, 0f),
+                AnimatorUtils.translationX(0f, dx),
+                AnimatorUtils.translationY(0f, dy)
+        );
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                item.setTranslationX(0f);
+                item.setTranslationY(0f);
+            }
+        });
+        anim.setDuration(50);
+        return anim;
+    }
+
+    private Animator createCircularReveal(final ClipRevealFrame view, int x, int y, float startRadius, float endRadius) {
+        final Animator reveal;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            reveal = ViewAnimationUtils.createCircularReveal(view, x, y, startRadius, endRadius);
+        } else {
+            view.setClipOutLines(true);
+            view.setClipCenter(x, y);
+            reveal = ObjectAnimator.ofFloat(view, "ClipRadius", startRadius, endRadius);
+            reveal.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    view.setClipOutLines(false);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+            });
+        }
+        return reveal;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (back_pressed + 2000 > System.currentTimeMillis()) super.onBackPressed();
+        else {
+            new AlertDialogWrapper.Builder(ctx)
+                    .setTitle("Are you sure you want to exit?")
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SettingsPage.this.finish();
+                }
+            }).show();
+            back_pressed = System.currentTimeMillis();
+        }
     }
 }

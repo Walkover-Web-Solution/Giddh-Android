@@ -141,9 +141,10 @@ public class AskTypeNextPage extends Activity {
 
                 if ((entryInfo.getDebitAccount() != null)
                         && (entryInfo.getCreditAccount() != null) && entryInfo.getSelected()) {
+                    ibSave.setEnabled(false);
                     CommonUtility.show_PDialog(ctx);
                     CommonUtility.syncwithServer(ctx);
-                    if (CommonUtility.isNetworkAvailable(ctx)){
+                    if (CommonUtility.isNetworkAvailable(ctx)) {
                         try {
                             new DoEntry().execute().get();
                         } catch (InterruptedException e) {
@@ -151,8 +152,7 @@ public class AskTypeNextPage extends Activity {
                         } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else {
+                    } else {
                         new BtnSave().execute();
                     }
 
@@ -195,7 +195,7 @@ public class AskTypeNextPage extends Activity {
                             entryInfo.getDebitAccount(), ctx, entryInfo.getGroupId()),
                     CommonUtility.getJsonArray(String.valueOf(entryInfo.getAmount()),
                             entryInfo.getCreditAccount(), ctx, entryInfo.getGroupId()),
-                    entryInfo.getTripId(), entryInfo.getDescription(), entryInfo.getDate(),entryInfo.getTransactionType());
+                    entryInfo.getTripId(), entryInfo.getDescription(), entryInfo.getDate(), entryInfo.getTransactionType());
             if (!response.equals("")) {
                 JSONObject joparent = null;
                 JSONObject jochild = null;
@@ -231,8 +231,8 @@ public class AskTypeNextPage extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (CommonUtility.dialog!=null)
-            CommonUtility.dialog.cancel();
+            if (CommonUtility.dialog != null)
+                CommonUtility.dialog.cancel();
             CommonUtility.showCustomAlertForContactsError(ctx, "Entry Added");
             Intent menu = new Intent(ctx, AskType.class);
             menu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -105,7 +105,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TS_COMPANYID = "companyId";
 
     String CREATE_TRIP_SHARE = " CREATE TABLE" + " " + TRIP_SHARE + "("
-            + TS_COMPANYID + " TEXT,"+ TS_COMPANYNTYPE + " TEXT,"  + TS_TRIP_ID + " TEXT," + TS_COMPANYNAME + " TEXT," + TS_EMAIL + " TEXT," + TS_OWNER + " TEXT" + ",PRIMARY KEY(trip_id, companyId));";
+            + TS_COMPANYID + " TEXT,"+ TS_COMPANYNTYPE + " TEXT,"  + TS_TRIP_ID + " TEXT," + TS_COMPANYNAME + " TEXT," + TS_EMAIL + " TEXT," + TS_OWNER + " TEXT" + ",PRIMARY KEY(_email, companyId));";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, version);

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.Giddh.R;
 import com.Giddh.adapters.FlagTypAdapter;
@@ -42,6 +43,7 @@ public class SelectInfo extends AppCompatActivity {
     int paramtype;
     Accounts acval;
     TripInfo tripInfo;
+    TextView emp_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,9 @@ public class SelectInfo extends AppCompatActivity {
         cat = new ArrayList<>();
         tripAsso = new ArrayList<>();
         paramtype = getIntent().getExtras().getInt(VariableClass.Vari.SELECTEDDATA);
+        emp_view = (TextView) findViewById(R.id.emp_view);
+        info.setEmptyView(emp_view);
+
         switch (paramtype) {
             case 0:
                 setgridAdapter("0");

@@ -6,20 +6,21 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:background="@android:color/transparent"
-    android:padding="7dp"
+    android:background="#C7C7C9"
     android:visibility="visible">
 
-    <TextView
+    <com.Giddh.commonUtilities.FontTextView
         android:id="@+id/searchrate_country_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:gravity="left"
         android:text="Date"
-        android:textStyle="bold"
-        android:textColor="#0B8B8A"
-        android:textSize="22sp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:textColor="@color/black"
+        android:textSize="15dp" />
 
 
 </RelativeLayout>

@@ -11,6 +11,7 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/imageView1"
+        android:maxLength="12"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/white"
         android:textStyle="bold"/>

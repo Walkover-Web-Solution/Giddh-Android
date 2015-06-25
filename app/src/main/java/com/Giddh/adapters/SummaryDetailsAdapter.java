@@ -11,12 +11,14 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.Giddh.R;
+import com.Giddh.commonUtilities.FontTextView;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.commonUtilities.VariableClass;
 import com.Giddh.dtos.SummaryAccount;
 import com.Giddh.dtos.SummaryEntry;
 import com.Giddh.util.UserService;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,7 +26,7 @@ public class SummaryDetailsAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private ArrayList<SummaryEntry> _listDataHeader = new ArrayList<>(); // header titles
     ArrayList<SummaryAccount> childitem;
-
+    DecimalFormat decimalFormat;
     UserService userService;
     Boolean TRIPSUMMARY;
 
@@ -33,6 +35,9 @@ public class SummaryDetailsAdapter extends BaseExpandableListAdapter {
         this._listDataHeader = listall;
         userService = UserService.getUserServiceInstance(_context);
         TRIPSUMMARY = Trip;
+        decimalFormat = new DecimalFormat("#.00");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
     }
 
     @Override
@@ -54,9 +59,9 @@ public class SummaryDetailsAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.saved_trips_row, null);
         }
-        TextView txtListChildName = (TextView) convertView
+        FontTextView txtListChildName = (FontTextView) convertView
                 .findViewById(R.id.name);
-        TextView txtamount = (TextView) convertView
+        FontTextView txtamount = (FontTextView) convertView
                 .findViewById(R.id.amount);
         if (TRIPSUMMARY) {
             txtListChildName.setText(childitem.get(childPosition).getAccountName());
@@ -64,7 +69,7 @@ public class SummaryDetailsAdapter extends BaseExpandableListAdapter {
             Log.e("accountid", "" + childitem.get(childPosition).getAccountId());
             txtListChildName.setText(userService.getaccountnameorId(childitem.get(childPosition).getAccountId()).getAccountName());
         }
-        txtamount.setText(String.valueOf(childitem.get(childPosition).getClosingBal()) + " " + Prefs.getCurrency(_context));
+        txtamount.setText(decimalFormat.format(childitem.get(childPosition).getClosingBal()) + " " + Prefs.getCurrency(_context));
         if (childitem.get(childPosition).getTransactionType().equals("1")) {
             txtamount.setTextColor(Color.parseColor("#F44336"));
         } else if (childitem.get(childPosition).getTransactionType().equals("0")) {
@@ -101,7 +106,7 @@ public class SummaryDetailsAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.summary_detail_headrow, null);
         }
-        TextView lblListHeader = (TextView) convertView
+        FontTextView lblListHeader = (FontTextView) convertView
                 .findViewById(R.id.searchrate_country_header);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(_listDataHeader.get(groupPosition).getDate());

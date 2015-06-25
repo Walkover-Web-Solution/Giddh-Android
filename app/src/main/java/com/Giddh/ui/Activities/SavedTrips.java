@@ -32,6 +32,7 @@ import com.Giddh.adapters.SavedTripsAdapter;
 import com.Giddh.commonUtilities.Apis;
 import com.Giddh.commonUtilities.ClipRevealFrame;
 import com.Giddh.commonUtilities.CommonUtility;
+import com.Giddh.commonUtilities.FontTextView;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.commonUtilities.VariableClass;
 import com.Giddh.dtos.EntryInfo;
@@ -68,7 +69,7 @@ public class SavedTrips extends AppCompatActivity {
     Button mCenterItem;
     Boolean menu = false;
     RelativeLayout mRootView;
-
+    private static long back_pressed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,10 +89,12 @@ public class SavedTrips extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
         View mCustomView = mInflater.inflate(R.layout.custom_action_bar, null);
-        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
+        FontTextView mTitleTextView = (FontTextView) mCustomView.findViewById(R.id.title_text);
         mTitleTextView.setText("Saved Trips");
         final ImageButton imageButton = (ImageButton) mCustomView
                 .findViewById(R.id.imageView1);
+        final FrameLayout btnlayout = (FrameLayout) mCustomView
+                .findViewById(R.id.button_layout);
         imageButton.setBackgroundResource(R.drawable.menu_actionbar);
         actionBar.setCustomView(mCustomView);
         actionBar.setDisplayShowCustomEnabled(true);
@@ -147,7 +150,7 @@ public class SavedTrips extends AppCompatActivity {
                 startActivity(home);
             }
         });
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        btnlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onRevealClick(view);
@@ -353,7 +356,23 @@ public class SavedTrips extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (back_pressed + 2000 > System.currentTimeMillis()) super.onBackPressed();
+        else {
+            new AlertDialogWrapper.Builder(ctx)
+                    .setTitle("Are you sure you want to exit?")
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SavedTrips.this.finish();
+                }
+            }).show();
+            back_pressed = System.currentTimeMillis();
+        }
     }
 
     void onRevealClick(View v) {
@@ -498,4 +517,5 @@ public class SavedTrips extends AppCompatActivity {
         }
         return reveal;
     }
+
 }

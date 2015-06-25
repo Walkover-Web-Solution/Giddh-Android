@@ -1,8 +1,7 @@
-<FrameLayout
-    android:id="@+id/root_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,29 +12,37 @@
         >
 
         <LinearLayout
+            android:id="@+id/summary_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:weightSum="10"
-            android:id="@+id/summary_root">
+            android:weightSum="10">
 
             <LinearLayout
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="5"
-                android:background="@drawable/border_ed_common"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:orientation="vertical">
 
                 <com.Giddh.commonUtilities.NonScrollListView
                     android:id="@+id/list_assets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/date_fromto"
+                    android:divider="@color/transparent"
                     android:dividerHeight="0dp"
-                    android:listSelector="@drawable/list_selector_common"/>
+                    android:listSelector="@drawable/list_selector_common" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_below="@+id/amount_assets_value"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@color/black" />
 
 
             </LinearLayout>
@@ -44,49 +51,59 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/b_acc"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="5dp">
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:id="@+id/amount_assets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
                     android:text="TOTAL"
                     android:textColor="@color/material_blue_grey_950"
                     android:textSize="18dp"
                     android:textStyle="bold"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
-                <TextView
+                <com.Giddh.commonUtilities.FontTextView
                     android:id="@+id/amount_assets_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:gravity="right"
                     android:text="0.0"
-                    android:textColor="@color/green_mat"
-                    android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textColor="#341E20"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
             </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/list2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="5"
-                android:background="@drawable/border_ed_common"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:orientation="vertical">
 
                 <com.Giddh.commonUtilities.NonScrollListView
                     android:id="@+id/list_liab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/date_fromto"
+                    android:divider="@color/transparent"
                     android:dividerHeight="0dp"
-                    android:listSelector="@drawable/list_selector_common"/>
+                    android:listSelector="@drawable/list_selector_common" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_below="@+id/list_liab"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@color/black" />
 
             </LinearLayout>
 
@@ -94,61 +111,76 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/b_acc"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="5dp">
+                android:layout_marginTop="2dp">
 
                 <TextView
                     android:id="@+id/amount_liab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
                     android:text="TOTAL"
                     android:textColor="@color/material_blue_grey_950"
                     android:textSize="18dp"
                     android:textStyle="bold"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
-                <TextView
+                <com.Giddh.commonUtilities.FontTextView
                     android:id="@+id/amount_liab_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:gravity="right"
                     android:text="0.0"
-                    android:textColor="@color/green_mat"
-                    android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textColor="#341E20"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/hand"
-                android:layout_margin="10dp"
-                android:background="@drawable/border_ed_common"
-                android:padding="10dp">
+
+                >
 
                 <RelativeLayout
                     android:id="@+id/expe"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
 
-                    <TextView
+                    <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
-                        android:text=" Expense"
+                        android:text="Expense"
                         android:textColor="@color/material_blue_grey_950"
-                        android:textSize="18dp"/>
+                        android:textSize="18sp" />
 
-                    <TextView
+                    <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/expense_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:gravity="right"
-                        android:textColor="@color/button_material_dark"
-                        android:textSize="18dp"/>
+                        android:textColor="#FF6060"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_below="@+id/expense_amount"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+
+                        android:layout_marginTop="10dp"
+                        android:background="@color/light_black"
+                        android:visibility="gone" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -156,24 +188,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/expe"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="5dp">
 
 
-                    <TextView
+                    <com.Giddh.commonUtilities.FontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
-                        android:text=" Income"
+                        android:text="Income"
                         android:textColor="@color/material_blue_grey_950"
-                        android:textSize="18dp"/>
+                        android:textSize="18dp" />
 
-                    <TextView
+                    <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/income_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:gravity="right"
-                        android:textColor="@color/button_material_dark"
-                        android:textSize="18dp"/>
+                        android:textColor="#03A9F4"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/income_amount"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="7dp"
+                        android:background="@color/black" />
+
                 </RelativeLayout>
 
 
@@ -183,31 +227,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/expenses"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="5dp">
 
-                <TextView
+                <com.Giddh.commonUtilities.FontTextView
                     android:id="@+id/total_amount_in_ex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
                     android:text="TOTAL"
                     android:textColor="@color/orange_footer_head"
                     android:textSize="18dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
-                <TextView
+                <com.Giddh.commonUtilities.FontTextView
                     android:id="@+id/total_amount_in_ex_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:gravity="right"
                     android:text="0.0"
-                    android:textColor="@color/green_mat"
-                    android:textSize="22sp"
-                    android:textStyle="bold"/>
+                    android:textColor="#341E20"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
@@ -239,7 +281,7 @@
                 <ImageView
                     android:layout_width="?listPreferredItemHeight"
                     android:layout_height="?listPreferredItemHeight"
-                    android:src="@drawable/summary_icon"/>
+                    android:src="@drawable/summary_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -247,7 +289,7 @@
                     android:background="@android:color/transparent"
                     android:text="Transaction"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -261,15 +303,15 @@
                 <ImageView
                     android:layout_width="?listPreferredItemHeight"
                     android:layout_height="?listPreferredItemHeight"
-                    android:src="@drawable/add_trip"/>
+                    android:src="@drawable/add_trip" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:text="Add Trip"
+                    android:text="Trip"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -283,7 +325,7 @@
                 <ImageView
                     android:layout_width="?listPreferredItemHeight"
                     android:layout_height="?listPreferredItemHeight"
-                    android:src="@drawable/setting_icon"/>
+                    android:src="@drawable/setting_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -292,7 +334,7 @@
                     android:enabled="false"
                     android:text="Settings"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
 
@@ -307,7 +349,7 @@
                 <ImageView
                     android:layout_width="?listPreferredItemHeight"
                     android:layout_height="?listPreferredItemHeight"
-                    android:src="@drawable/company"/>
+                    android:src="@drawable/company" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -315,7 +357,7 @@
                     android:background="@android:color/transparent"
                     android:text="Company"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </com.ogaclejapan.arclayout.ArcLayout>
@@ -325,7 +367,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent" />
     </com.Giddh.commonUtilities.ClipRevealFrame>
 
 

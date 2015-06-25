@@ -16,7 +16,7 @@ public class Prefs {
     private static final String CURRENCY = "currency";
     private static final String COUNTRY = "country";
     private static final String SIZEMAIL = "mails";
-
+    private static final String FIRSTTIME = "first_time";
 
     private static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences("mypref", Context.MODE_MULTI_PROCESS | Context.MODE_PRIVATE);
@@ -54,6 +54,14 @@ public class Prefs {
     }
 
 
+    public static String getFirsttime(Context context) {
+        return getPrefs(context).getString(FIRSTTIME, "");
+    }
+
+    public static void setFirsttime(Context context, String value) {
+        // perform validation etc..
+        getPrefs(context).edit().putString(FIRSTTIME, value).commit();
+    }
     public static String getUserName(Context context) {
         return getPrefs(context).getString(USER_NAME, "");
     }

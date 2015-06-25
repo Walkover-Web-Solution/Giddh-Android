@@ -50,7 +50,7 @@
                 android:id="@+id/today"
                 android:gravity="center_horizontal"
                 android:layout_weight="5"
-                android:textSize="18dp"
+                android:textSize="14sp"
                 android:textColor="@color/action_bar_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             <TextView
                 android:id="@+id/perhead"
                 android:layout_weight="5"
-                android:textSize="18dp"
+                android:textSize="14sp"
                 android:textColor="@android:color/holo_green_dark"
                 android:gravity="center_horizontal"
                 android:layout_width="wrap_content"

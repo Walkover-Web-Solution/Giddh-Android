@@ -939,12 +939,12 @@ public class UserService {
     }
 
     //deleting email from table
-    public void deleteEmail(String tripId, String email) {
+    public void deleteEmail(String tripId, String email, String cid) {
         System.out.println("starting fetch");
         extraFunction();
         sdb = dbH.getReadableDatabase();
         String s;
-        s = "DELETE FROM " + DBHandler.TRIP_SHARE + " where trip_id='" + tripId + "'AND _email='" + email + "'";
+        s = "DELETE FROM " + DBHandler.TRIP_SHARE + " where trip_id='" + tripId + "'AND _email='" + email + "'AND companyId=" + cid + "'";
         Cursor c = sdb.rawQuery(s, null);
         if (c != null) {
             if (c.moveToFirst()) {
@@ -1163,7 +1163,7 @@ public class UserService {
         return i;
     }
 
-    public long updateTripInfoshare(TripShare dto, String tripId, String cid) {
+    public long updateTripInfoshare(TripShare dto, String tripId, String cid, String mail) {
         Log.d("updating in database", "updating database ");
         extraFunction();
         sdb = dbH.getWritableDatabase();
@@ -1175,7 +1175,7 @@ public class UserService {
         values.put(DBHandler.TS_COMPANYNAME, dto.getCompanyName());
         values.put(DBHandler.TS_COMPANYNTYPE, dto.getCompanyType());
 
-        long i = sdb.update(DBHandler.TRIP_SHARE, values, " trip_id= '" + tripId + "' AND companyId='" + cid + "'", null);
+        long i = sdb.update(DBHandler.TRIP_SHARE, values, " trip_id= '" + tripId + "' AND companyId='" + cid + "' AND _email= '" + mail + "'", null);
         Log.d("updating in database", "updating database " + i + "" + dto.getEmail());
         return i;
     }
@@ -1211,7 +1211,7 @@ public class UserService {
             values.put(DBHandler.TS_COMPANYNTYPE, dto.getCompanyType());
             values.put(DBHandler.TS_COMPANYNAME, dto.getCompanyName());
             values.put(DBHandler.TS_COMPANYID, dto.getCompanyId());
-            long i = sdb.update(DBHandler.TRIP_SHARE, values, " trip_id= '" + trips.get(j).getTripId() + "' AND companyId='" + trips.get(j).getCompanyId() + "'", null);
+            long i = sdb.update(DBHandler.TRIP_SHARE, values, " trip_id= '" + trips.get(j).getTripId() + "' AND companyId='" + trips.get(j).getCompanyId() + "'AND _email='" + trips.get(j).getEmail() + "'", null);
             Log.d("updating in database", "updating database " + i + "" + dto.getEmail());
         }
     }

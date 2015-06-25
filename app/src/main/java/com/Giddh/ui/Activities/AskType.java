@@ -34,11 +34,8 @@ import com.Giddh.dtos.GroupDetails;
 import com.Giddh.dtos.TripInfo;
 import com.Giddh.util.UserService;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.splunk.mint.Mint;
 
 import org.json.JSONArray;
@@ -211,6 +208,8 @@ public class AskType extends Activity {
                         } else {
                             Intent addbank = new Intent(context, AddBankDetails.class);
                             addbank.putExtra("value", true);
+                            addbank.putExtra(VariableClass.Vari.SELECTEDDATA, true);
+
                             startActivity(addbank);
                         }
                     } else {
@@ -574,8 +573,14 @@ public class AskType extends Activity {
     }
 
     @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Log.e("on lowmemory", "on lowmemory");
+    }
+
+    @Override
     public void onBackPressed() {
-        super.onBackPressed();
+      /*  super.onBackPressed();
         if (givingMoney.getVisibility() == View.VISIBLE || receivingMoney.getVisibility() == View.VISIBLE) {
             Intent i = new Intent(context, HomeActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -583,6 +588,13 @@ public class AskType extends Activity {
             startActivity(i);
             AskType.this.finish();
         } else {
+            Intent i = new Intent(context, AskType.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            AskType.this.finish();
+        }*/
+        if (flagLayout.getVisibility()==View.VISIBLE) {
             Intent i = new Intent(context, AskType.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

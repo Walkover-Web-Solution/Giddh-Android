@@ -1,313 +1,446 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/bg_all">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_all">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp">
 
+        >
 
-        <RelativeLayout
-            android:id="@+id/change_name1"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/root"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent">
 
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/change_name"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical|left"
-                android:text="Profile Name"
-                android:textColor="#0B8B8A"
-                android:textSize="25dp"/>
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/subprofilename"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/change_name"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="5dp"
-                android:textSize="16dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/change_name1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp">
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/change_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center_vertical|left"
+                        android:text="Profile Name"
+                        android:textColor="#0B8B8A"
+                        android:textSize="25dp" />
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/subprofilename"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/change_name"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_below="@+id/change_name1"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/light_black" />
+
+                <RelativeLayout
+                    android:id="@+id/add_bnk1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/change_name1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp">
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/add_bnk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center_vertical|left"
+                        android:text="Bank Accounts"
+                        android:textColor="#0B8B8A"
+                        android:textSize="25dp" />
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/subaccounts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/add_bnk"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16dp" />
+                </RelativeLayout>
+
+                <com.Giddh.commonUtilities.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_below="@+id/add_bnk1"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/light_black" />
+
+                <RelativeLayout
+                    android:id="@+id/aso_trip1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/add_bnk1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp">
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/aso_trip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center_vertical|left"
+                        android:text="Associated trips"
+                        android:textColor="#0B8B8A"
+                        android:textSize="25dp" />
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/subtrips"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/aso_trip"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16dp" />
+                </RelativeLayout>
+
+                <com.Giddh.commonUtilities.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_below="@+id/aso_trip1"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/light_black" />
+
+                <RelativeLayout
+                    android:id="@+id/credit_card1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/aso_trip1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp">
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/credit_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center_vertical|left"
+                        android:text="Credit Card"
+                        android:textColor="#0B8B8A"
+                        android:textSize="25dp" />
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/subcard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/credit_card"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16dp" />
+                </RelativeLayout>
+
+                <com.Giddh.commonUtilities.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_below="@+id/credit_card1"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/light_black" />
+
+                <RelativeLayout
+                    android:id="@+id/sync1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/credit_card1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp">
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/sync"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical|left"
+                        android:text="Sync"
+                        android:textColor="#0B8B8A"
+                        android:textSize="25dp" />
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/subSync"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/sync"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16dp" />
+
+                </RelativeLayout>
+
+                <com.Giddh.commonUtilities.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_below="@+id/sync1"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/light_black" />
+
+                <RelativeLayout
+                    android:id="@+id/currency1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sync1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:visibility="gone">
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/currency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical|left"
+                        android:text="$"
+                        android:textColor="#0B8B8A"
+                        android:textSize="25dp" />
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/subcurrency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/currency"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16dp" />
+
+                </RelativeLayout>
+
+                <com.Giddh.commonUtilities.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_below="@+id/currency1"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/light_black" />
+
+                <RelativeLayout
+                    android:id="@+id/accounts1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/currency1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp">
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/accounts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical|left"
+                        android:text="Accounts"
+                        android:textColor="#0B8B8A"
+                        android:textSize="25dp" />
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/subaccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/accounts"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/logout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/accounts1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp">
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical|left"
+                        android:text="Log out"
+                        android:textColor="#0B8B8A"
+                        android:textSize="25dp" />
+
+                    <com.Giddh.commonUtilities.FontTextView
+                        android:id="@+id/sublogout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/logout"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16dp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_below="@+id/accounts1"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/light_black" />
+
+            </RelativeLayout>
+
+
         </RelativeLayout>
+    </ScrollView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:layout_below="@+id/change_name1"
-            android:layout_marginRight="10dp"
-            android:background="@color/light_black"/>
+    <com.Giddh.commonUtilities.ClipRevealFrame
+        android:id="@+id/menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_arc"
+        android:visibility="gone">
 
-        <RelativeLayout
-            android:id="@+id/add_bnk1"
+        <com.ogaclejapan.arclayout.ArcLayout
+            android:id="@+id/arc_layout"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:arc_axisRadius="100dp"
+            app:arc_origin="center"
+            app:arc_radius="135dp">
+
+            <LinearLayout
+                android:id="@+id/transaction_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="?listPreferredItemHeight"
+                    android:layout_height="?listPreferredItemHeight"
+                    android:src="@drawable/summary_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Transaction"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/summary_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="?listPreferredItemHeight"
+                    android:layout_height="?listPreferredItemHeight"
+                    android:src="@drawable/summary_arc" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Summary"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/trip_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="?listPreferredItemHeight"
+                    android:layout_height="?listPreferredItemHeight"
+                    android:src="@drawable/trip_orange" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:enabled="false"
+                    android:text="Trip"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/home_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="?listPreferredItemHeight"
+                    android:layout_height="?listPreferredItemHeight"
+                    android:src="@drawable/company" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Company"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+        </com.ogaclejapan.arclayout.ArcLayout>
+
+        <Button
+            android:id="@+id/center_item"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/change_name1"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/add_bnk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical|left"
-                android:text="Bank Accounts"
-                android:textColor="#0B8B8A"
-                android:textSize="25dp"/>
-
-            <TextView
-                android:id="@+id/subaccounts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/add_bnk"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="5dp"
-                android:textSize="16dp"/>
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:layout_below="@+id/add_bnk1"
-            android:layout_marginRight="10dp"
-            android:background="@color/light_black"/>
-
-        <RelativeLayout
-            android:id="@+id/aso_trip1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/add_bnk1"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/aso_trip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical|left"
-                android:text="Associated trips"
-                android:textColor="#0B8B8A"
-                android:textSize="25dp"/>
-
-            <TextView
-                android:id="@+id/subtrips"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/aso_trip"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="5dp"
-                android:textSize="16dp"/>
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:layout_below="@+id/aso_trip1"
-            android:layout_marginRight="10dp"
-            android:background="@color/light_black"/>
-
-        <RelativeLayout
-            android:id="@+id/credit_card1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/aso_trip1"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/credit_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical|left"
-                android:text="Credit Card"
-                android:textColor="#0B8B8A"
-                android:textSize="25dp"/>
-
-            <TextView
-                android:id="@+id/subcard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/credit_card"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="5dp"
-                android:textSize="16dp"/>
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:layout_below="@+id/credit_card1"
-            android:layout_marginRight="10dp"
-            android:background="@color/light_black"/>
-
-        <RelativeLayout
-            android:id="@+id/sync1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/credit_card1"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/sync"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical|left"
-                android:text="Sync"
-                android:textColor="#0B8B8A"
-                android:textSize="25dp"/>
-
-            <TextView
-                android:id="@+id/subSync"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/sync"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="5dp"
-                android:textSize="16dp"/>
-
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:layout_below="@+id/sync1"
-            android:layout_marginRight="10dp"
-            android:background="@color/light_black"/>
-
-        <RelativeLayout
-            android:id="@+id/currency1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/sync1"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:visibility="gone"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/currency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical|left"
-                android:text="$"
-                android:textColor="#0B8B8A"
-                android:textSize="25dp"/>
-
-            <TextView
-                android:id="@+id/subcurrency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/currency"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="5dp"
-                android:textSize="16dp"/>
-
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:layout_below="@+id/currency1"
-            android:layout_marginRight="10dp"
-            android:background="@color/light_black"/>
-
-        <RelativeLayout
-            android:id="@+id/accounts1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/currency1"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/accounts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical|left"
-                android:text="Accounts"
-                android:textColor="#0B8B8A"
-                android:textSize="25dp"/>
-
-            <TextView
-                android:id="@+id/subaccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/accounts"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="5dp"
-                android:textSize="16dp"/>
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/logout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/accounts1"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical|left"
-                android:text="Log out"
-                android:textColor="#0B8B8A"
-                android:textSize="25dp"/>
-
-            <TextView
-                android:id="@+id/sublogout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/logout"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="5dp"
-                android:textSize="16dp"/>
-
-        </RelativeLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:layout_below="@+id/accounts1"
-            android:layout_marginRight="10dp"
-            android:background="@color/light_black"/>
-
-    </RelativeLayout>
-
-
-</RelativeLayout>
+            android:layout_gravity="center"
+            android:background="@android:color/transparent" />
+    </com.Giddh.commonUtilities.ClipRevealFrame>
+</FrameLayout>

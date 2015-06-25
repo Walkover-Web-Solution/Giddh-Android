@@ -2,6 +2,7 @@ package com.Giddh.commonUtilities;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -14,13 +15,26 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class Apis {
     public static Apis apis;
@@ -65,43 +79,24 @@ public class Apis {
         return response;
     }
 
-/*
-    //API FOR SIGNUP WITH GOOGLE
-    public String signupWithGoogleFacebook(String accessToken, String accessType) throws IOException {
-        serverName = Prefs.getServerUrl(ct);
-        completeUrl = serverName + "generateAuthKey";
-        URL url = new URL(completeUrl);
 
-        Map<String, Object> params = new LinkedHashMap<>();
-        params.put(VariableClass.ResponseVariables.ACCESSTOKEN, accessToken);
-        params.put(VariableClass.ResponseVariables.ACCESSTYPE, accessType);
-        params.put(VariableClass.ResponseVariables.MOBILE, "1");
-        StringBuilder postData = new StringBuilder();
-        for (Map.Entry<String, Object> param : params.entrySet()) {
-            if (postData.length() != 0) postData.append('&');
-            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-            postData.append('=');
-            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+    private String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        for (NameValuePair pair : params) {
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
         }
-        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
-        int postDataLength = postDataBytes.length;
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setDoInput(true);
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        conn.setRequestProperty("charset", "utf-8");
-        conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-        conn.setUseCaches(false);
-        conn.setDoOutput(true);
-//       System.out.println("Response Code: " + conn.getResponseCode());
-        InputStream in = new BufferedInputStream(conn.getInputStream());
-        response = IOUtils.toString(in, "UTF-8");
 
-        Log.e("signup with google fb", "" + response);
-        return response;
+        return result.toString();
     }
-*/
-
 
     //API FOR ADDING ACCOUNT
     public String addAccount(String groupName, String accountName, String uniqueName, String openingBalance) {

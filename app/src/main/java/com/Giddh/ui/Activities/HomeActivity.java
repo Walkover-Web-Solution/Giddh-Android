@@ -3,13 +3,10 @@ package com.Giddh.ui.Activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -34,6 +31,7 @@ import com.Giddh.dtos.CompanyDetails;
 import com.Giddh.dtos.EntryInfo;
 import com.Giddh.dtos.GroupDetails;
 import com.Giddh.dtos.GroupInfo;
+import com.Giddh.dtos.TripInfo;
 import com.Giddh.util.UserService;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -45,14 +43,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Currency;
-import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class HomeActivity extends AppCompatActivity {
     ListView companyList;
@@ -71,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     Accounts bankacc, wallet;
     private static long back_pressed;
 
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,13 +78,14 @@ public class HomeActivity extends AppCompatActivity {
         companyList = (ListView) findViewById(R.id.company_list);
         error_FontTextView = (TextView) findViewById(R.id.error_text);
         error_layout = (RelativeLayout) findViewById(R.id.error_layout);
+
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.drawable.resize_white_logo);
         actionBar.setTitle(CommonUtility.getfonttext("Giddh", HomeActivity.this));
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar_color)));
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));
         companies = new ArrayList<>();
         if (CommonUtility.isNetworkAvailable(ctx)) {
             new getCompanyNames().execute();
@@ -153,6 +148,9 @@ public class HomeActivity extends AppCompatActivity {
                 }*/
             }
         });
+        if (CommonUtility.isNetworkAvailable(ctx))
+            new DelEntries().execute();
+
     }
 
     class getCompanyNames extends AsyncTask<Void, Void, Void> {
@@ -162,8 +160,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             CommonUtility.dialog.dismiss();
-            if (CommonUtility.isNetworkAvailable(ctx))
-                new AccountList().execute();
+
             companies = userService.getcompaniesList(Prefs.getEmailId(ctx));
             if (iserr) {
                 adapter = new CompanyListAdapter(companies, ctx);
@@ -181,6 +178,10 @@ public class HomeActivity extends AppCompatActivity {
                     companyList.setVisibility(View.GONE);
                 }
             }
+            if (CommonUtility.isNetworkAvailable(ctx)) {
+                new AccountList().execute();
+            }
+
             super.onPostExecute(result);
         }
 
@@ -298,7 +299,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                CommonUtility.clearData(ctx,this);
+                CommonUtility.clearData(ctx, this);
                 VariableClass.Vari.LOGIN_FIRST_TIME = true;
                 VariableClass.Vari.MESSEGE_FIRST_TIME = true;
                 Intent SignUp = new Intent(ctx, SplashScreen.class);
@@ -440,7 +441,7 @@ public class HomeActivity extends AppCompatActivity {
                             grpName = CommonUtility.getgroupIdName(grpName);
                             for (int j = 0; j < acc.getGroupDetail().get(i).getAccountDetails().size(); j++) {
                                 Accounts accounts = new Accounts();
-                                AccountDetails accountDetails = new AccountDetails();
+                                AccountDetails accountDetails ;
                                 accountDetails = acc.getGroupDetail().get(i).getAccountDetails().get(j);
                                 accounts.setGroupId(grpName);
                                 accounts.setAccountName(accountDetails.getAccountName());
@@ -475,31 +476,33 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    /*class AccountList extends AsyncTask<Void, Void, Void> {
+    class DelEntries extends AsyncTask<Void, Void, Void> {
         String response = null;
         Boolean iserr = false;
+        JSONArray japarent = null;
 
         @Override
         protected void onPostExecute(Void result) {
-            CommonUtility.dialog.dismiss();
-            CommonUtility.syncwithServer(ctx);
+            if (iserr) {
+                //showErrorMessage(true, response);
+            } else {
+            }
             super.onPostExecute(result);
         }
 
         @Override
         protected void onPreExecute() {
-            CommonUtility.show_PDialog(ctx);
+            // showErrorMessage(false, "");
             super.onPreExecute();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            response = Apis.getApisInstance(ctx).getAccountList();
+            response = Apis.getApisInstance(ctx).getalldelete();
             if (!response.equals("")) {
                 JSONObject joparent = null;
                 JSONObject jochild = null;
-                JSONArray jachild = null;
-                JSONArray japarent = null;
+                //JSONArray japarent = null;
                 try {
                     joparent = new JSONObject(response);
                     if (joparent.getString(VariableClass.ResponseVariables.RESPONSE).equals(Apis.ErrorResponse)) {
@@ -511,36 +514,10 @@ public class HomeActivity extends AppCompatActivity {
                     else if (joparent.getString(VariableClass.ResponseVariables.RESPONSE).equals(Apis.SuccessResponse)) {
                         japarent = joparent.getJSONArray(VariableClass.ResponseVariables.DATA);
                         jochild = japarent.getJSONObject(0);
-                        CompanyDetails acc = new CompanyDetails();
-                        japarent = joparent.getJSONArray(VariableClass.ResponseVariables.DATA);
-                        GsonBuilder gsonb = new GsonBuilder();
-                        Gson gson = gsonb.create();
-                        acc = gson.fromJson(japarent.getJSONObject(0).toString(), CompanyDetails.class);
-                        for (int i = 0; i < acc.getGroupDetail().size(); i++) {
-                            GroupDetails groupDetails = acc.getGroupDetail().get(i);
-                            String grpName = acc.getGroupDetail().get(i).getGroupName();
-                            grpName = CommonUtility.getgroupIdName(grpName);
-                            for (int j = 0; j < acc.getGroupDetail().get(i).getAccountDetails().size(); j++) {
-                                Accounts accounts = new Accounts();
-                                AccountDetails accountDetails = new AccountDetails();
-                                accountDetails = acc.getGroupDetail().get(i).getAccountDetails().get(j);
-                                accounts.setGroupId(grpName);
-                                accounts.setAccountName(accountDetails.getAccountName());
-                                userService.getmaxaccId();
-                                int id = userService.getmaxaccId() + 1;
-                                Log.e("web_id=", " " + id);
-                                accounts.setAcc_webId(String.valueOf(id));
-                                if (accountDetails.getOpeningBalance() != null && !accountDetails.getOpeningBalance().equals("")) {
-                                    if (accountDetails.getOpeningBalanceType().equals("1")) {
-                                        accounts.setOpeningBalance(Double.parseDouble(accountDetails.getOpeningBalance()) * -1);
-                                    } else {
-                                        accounts.setOpeningBalance(Double.parseDouble((accountDetails.getOpeningBalance())));
-                                    }
-                                } else {
-                                    accounts.setOpeningBalance(0);
-                                }
-                                userService.addaccountsdata(accounts);
-                            }
+                        japarent = jochild.getJSONArray(VariableClass.ResponseVariables.ENTRY_ID);
+                        for (int i = 0; i < japarent.length(); i++) {
+                            userService.deleteEntry(false, japarent.getString(i));
+                            userService.deleteEntry(true, japarent.getString(i));
                         }
                     }
                 } catch (JSONException e) {
@@ -554,5 +531,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             return null;
         }
-    }*/
+    }
+
+
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -14,37 +15,41 @@
         android:src="@drawable/giddh_signin" />
 
 
-    <TextView
+    <!--  <com.facebook.widget.LoginButton
+          android:id="@+id/btn_fb_login"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_centerVertical="true"
+          android:layout_margin="12dp"
+          android:gravity="center"
+          android:padding="10dp"
+          facebook:confirm_logout="false"
+          android:textSize="22sp">
+      </com.facebook.widget.LoginButton>-->
+    <Button xmlns:fb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/btn_fb_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="42dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_margin="12dp"
-        android:background="#5170B1"
-        android:gravity="center"
-
-        android:padding="10dp"
-        android:text="Facebook"
-        android:textColor="@color/white"
-        android:textSize="22sp">
-
-
-    </TextView>
+        android:background="@color/com_facebook_blue"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="2dp"
+        android:text="sign in"
+        android:drawableLeft="@drawable/fb"
+        android:textColor="@color/white" />
 
     <com.google.android.gms.common.SignInButton
-
         android:id="@+id/btn_google_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_fb_login"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="15dp"
         android:gravity="center_vertical|center_horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textSize="22sp" />
+        android:layout_marginTop="10dp"
+        />
 
 
 </RelativeLayout>

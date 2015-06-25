@@ -40,6 +40,7 @@ public class AddBankDetails extends AppCompatActivity {
     Accounts accounts1;
     AddBankAdapter addBankAdapter;
     Boolean Bankacc = false;
+    Boolean back = false;
     Boolean editmode = false;
     android.support.v7.app.ActionBar actionBar;
 
@@ -63,6 +64,7 @@ public class AddBankDetails extends AppCompatActivity {
         addnew = (TextView) findViewById(R.id.addnew);
         accounts = new ArrayList<>();
         Bankacc = getIntent().getExtras().getBoolean("value");
+        back = getIntent().getExtras().getBoolean(VariableClass.Vari.SELECTEDDATA);
         if (Bankacc) {
             accounts = userService.getcountacc("3", "Cash");
             addBankAdapter = new AddBankAdapter(accounts, ctx);
@@ -90,6 +92,7 @@ public class AddBankDetails extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                save.setEnabled(false);
                 if (openingbal.getText().toString() != null && bankName.getText() != null) {
                     if (!editmode) {
                         if (Bankacc) {
@@ -153,11 +156,21 @@ public class AddBankDetails extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(ctx, SettingsPage.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-        AddBankDetails.this.finish();
+        if (back){
+            Intent i = new Intent(ctx, AskType.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            AddBankDetails.this.finish();
+        }
+        else {
+            Intent i = new Intent(ctx, SettingsPage.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            AddBankDetails.this.finish();
+        }
+
     }
 
     class AddAccount extends AsyncTask<Accounts, Void, Void> {

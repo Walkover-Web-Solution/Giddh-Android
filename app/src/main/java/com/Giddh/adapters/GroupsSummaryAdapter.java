@@ -1,6 +1,7 @@
 package com.Giddh.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.Giddh.R;
+import com.Giddh.commonUtilities.FontTextView;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.dtos.Accounts;
 import com.Giddh.dtos.SummaryAccount;
 import com.Giddh.dtos.SummaryGroup;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class GroupsSummaryAdapter extends BaseAdapter {
@@ -20,7 +23,7 @@ public class GroupsSummaryAdapter extends BaseAdapter {
     ArrayList<SummaryAccount> list = new ArrayList<>();
     ArrayList<SummaryAccount> list2 = new ArrayList<>();
     GroupsSummaryAdapter adapter;
-
+    DecimalFormat decimalFormat;
     public GroupsSummaryAdapter(ArrayList<SummaryAccount> sgDto, Context paramContext, Boolean showliab) {
         list2 = sgDto;
         if (showliab) {
@@ -38,6 +41,9 @@ public class GroupsSummaryAdapter extends BaseAdapter {
             }
         }
         this.ctx = paramContext;
+        decimalFormat = new DecimalFormat("#.00");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
     }
 
     public int getCount() {
@@ -56,8 +62,8 @@ public class GroupsSummaryAdapter extends BaseAdapter {
         if (paramView == null) {
             paramView = LayoutInflater.from(ctx).inflate(R.layout.closing_bal, null);
             ViewHolder viewholder = new ViewHolder();
-            viewholder.tvGrpNames = ((TextView) paramView.findViewById(R.id.group_name));
-            viewholder.tvclosingbalance = ((TextView) paramView.findViewById(R.id.amount));
+            viewholder.tvGrpNames = ((FontTextView) paramView.findViewById(R.id.group_name));
+            viewholder.tvclosingbalance = ((FontTextView) paramView.findViewById(R.id.amount));
             paramView.setTag(viewholder);
         }
         final ViewHolder viewholder = (ViewHolder) paramView.getTag();
@@ -65,12 +71,20 @@ public class GroupsSummaryAdapter extends BaseAdapter {
         ldto = new SummaryAccount();
         ldto = list.get(paramInt);
         viewholder.tvGrpNames.setText(ldto.getAccountName());
-        viewholder.tvclosingbalance.setText(ldto.getClosingBal() + " " + Prefs.getCurrency(ctx));
+
+        if (ldto.getClosingBal() < 0) {
+            viewholder.tvclosingbalance.setTextColor(Color.parseColor("#FF6060"));
+
+            viewholder.tvclosingbalance.setText(decimalFormat.format(ldto.getClosingBal() * -1) + " " + Prefs.getCurrency(ctx));
+        } else {
+            viewholder.tvclosingbalance.setText(decimalFormat.format(ldto.getClosingBal()) + " " + Prefs.getCurrency(ctx));
+            // viewholder.tvclosingbalance.setTextColor(Color.parseColor("#03A9F4"));
+        }
         return paramView;
     }
 
     static class ViewHolder {
-        public TextView tvGrpNames;
-        public TextView tvclosingbalance;
+        public FontTextView tvGrpNames;
+        public FontTextView tvclosingbalance;
     }
 }

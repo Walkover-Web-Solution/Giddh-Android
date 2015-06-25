@@ -9,8 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Button;
 
 import com.Giddh.R;
 import com.Giddh.commonUtilities.Apis;
@@ -43,14 +42,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class SignUpHome extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
-    TextView btnfacebookLogin;
+    Button btnfacebookLogin;
     private final static String APP_ID = "830265573699296";
-    private Boolean mConfirmCredentials = false;
     private static final String TAG = "SignUpHome";
     public static final int ACCESSTYPEFB = 1;
     public static final int ACCESSTYPEGOOGLE = 2;
-    public static final int REQUEST_CODE = 01;
     private static final int RC_SIGN_IN = 0;
+    Bundle bundle;
 
     // Google client to communicate with Google
     private GoogleApiClient mGoogleApiClient;
@@ -59,8 +57,9 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
     private boolean signedInUser;
     private ConnectionResult mConnectionResult;
     private SignInButton signinButton;
+
     String full_name;
-    String user_email, mAccountName;
+    String user_email, mAccountName = null;
     Context ctx;
     static int accessType;
     private SimpleFacebook mSimpleFacebook;
@@ -78,7 +77,7 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
         Mint.initAndStartSession(SignUpHome.this, CommonUtility.BUGSENSEID);
         Mint.setUserIdentifier(Prefs.getEmailId(SignUpHome.this));
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/fontawesome_webfont.ttf");
-        btnfacebookLogin = (TextView) findViewById(R.id.btn_fb_login);
+        btnfacebookLogin = (Button) findViewById(R.id.btn_fb_login);
         /*btnGoogleLogin = (TextView) findViewById(R.id.btn_google_login);*/
         signinButton = (SignInButton) findViewById(R.id.btn_google_login);
         SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
@@ -91,6 +90,7 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                signinButton.setEnabled(false);
                 accessType = ACCESSTYPEGOOGLE;
                 googlePlusLogin();
 
@@ -99,6 +99,7 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
         btnfacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnfacebookLogin.setEnabled(false);
                 showErrorMessage(false, "");
                 if (CommonUtility.isNetworkAvailable(ctx)) {
                     accessType = ACCESSTYPEFB;
@@ -120,27 +121,29 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
         mGoogleApiClient.connect();
     }
 
-    public void signIn(View v) {
-        googlePlusLogin();
-    }
-
-    public void logout(View v) {
-        googlePlusLogout();
-    }
-
-    public void googlePlusLogout() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
-
-        }
-    }
 
     @Override
     public void onConnected(Bundle arg0) {
+        bundle = arg0;
         signedInUser = false;
-        getProfileInformation();
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                String personName = currentPerson.getDisplayName();
+               /* String personPhotoUrl = currentPerson.getImage().getUrl();*/
+                Prefs.setUserName(SignUpHome.this, personName);
+                if (mAccountName == null)
+                    mAccountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
+                Prefs.setEmailId(ctx, mAccountName);
+                if (mAccountName != null)
+                    new RetrieveCodeTask().execute(mAccountName);
+                else
+                    CommonUtility.showCustomAlertForContactsError(ctx, "account null");
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -150,16 +153,13 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
         if (requestCode == RC_SIGN_IN) {
             if (resultCode != RESULT_OK) {
                 signedInUser = false;
-
             }
-
+            if (mAccountName != null || accessToken == null)
+                new RetrieveCodeTask().execute(mAccountName);
             mIntentInProgress = false;
-
             if (!mGoogleApiClient.isConnecting()) {
                 mGoogleApiClient.connect();
             }
-
-
         }
         mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
         //super.onActivityResult(requestCode, resultCode, data);
@@ -171,59 +171,6 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
         mGoogleApiClient.connect();
     }
 
-    private void getProfileInformation() {
-        try {
-            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-                String personName = currentPerson.getDisplayName();
-               /* String personPhotoUrl = currentPerson.getImage().getUrl();*/
-                Prefs.setUserName(SignUpHome.this, personName);
-                mAccountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
-                Prefs.setEmailId(ctx, mAccountName);
-                if (VariableClass.Vari.LOGIN_FIRST_TIME) {
-                    AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
-                        @Override
-                        protected String doInBackground(Void... params) {
-                            String token = null;
-
-                            try {
-                                accessToken = GoogleAuthUtil.getToken(
-                                        SignUpHome.this,
-                                        mAccountName,
-                                        "oauth2:profile email");
-                            } catch (IOException transientEx) {
-                                // Network or server error, try later
-                                Log.e(TAG, transientEx.toString());
-                            } catch (UserRecoverableAuthException e) {
-                                // Recover (with e.getIntent())
-                                Log.e(TAG, e.toString());
-                                Intent recover = e.getIntent();
-                                startActivityForResult(recover, RC_SIGN_IN);
-                            } catch (GoogleAuthException authEx) {
-                                // The call is not ever expected to succeed
-                                // assuming you have already verified that
-                                // Google Play services is installed.
-                                Log.e(TAG, authEx.toString());
-                            }
-
-                            return accessToken;
-                        }
-
-                        @Override
-                        protected void onPostExecute(String token) {
-                            Log.i(TAG, "Access token retrieved:" + token);
-                            new LoginGoogleFb().execute();
-                        }
-
-                    };
-                    task.execute();
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     final OnLoginListener onLoginListener = new OnLoginListener() {
         @Override
@@ -367,7 +314,6 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
         }
 
         if (mGoogleApiClient.isConnected()) {
-
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
         }
@@ -422,5 +368,39 @@ public class SignUpHome extends Activity implements ConnectionCallbacks, OnConne
             //mGoogleApiClient.connect();
         }
         super.onDestroy();
+    }
+
+    private class RetrieveCodeTask extends AsyncTask<String, Void, String> {
+        String code;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                code = GoogleAuthUtil.getToken(
+                        SignUpHome.this,
+                        strings[0],
+                        "oauth2:profile email");
+            } catch (IOException transientEx) {
+                return null;
+            } catch (UserRecoverableAuthException e) {
+                // Needs sign in, so fire it! This will likely happen the
+                // first time. Results go to onActivityResult
+                startActivityForResult(e.getIntent(), RC_SIGN_IN);
+                return null;
+            } catch (GoogleAuthException authEx) {
+                return null;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String cookie) {
+            super.onPostExecute(cookie);
+            if (code != null) {
+                accessToken = code;
+                new LoginGoogleFb().execute();
+            }
+
+        }
     }
 }

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.Giddh.R;
 import com.Giddh.adapters.SavedEmailsAdapter;
 import com.Giddh.commonUtilities.Apis;
+import com.Giddh.commonUtilities.CommonUtility;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.commonUtilities.VariableClass;
 import com.Giddh.dtos.TripInfo;
@@ -31,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class SavedEmails extends Fragment {
@@ -121,7 +121,7 @@ public class SavedEmails extends Fragment {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 new removemailfromtrip().execute(share.getEmail());
-                                                userService.deleteEmail(share.getTripId(), share.getEmail());
+                                                userService.deleteEmail(share.getTripId(), share.getEmail(),share.getCompanyId());
                                                 tripsInDb.remove(position);
                                                 savedTripsAdapter.updateReceiptsList(share);
                                                 savedTripsAdapter.notifyDataSetChanged();
@@ -134,16 +134,20 @@ public class SavedEmails extends Fragment {
                 return true;
             }
         });
+        if (CommonUtility.isNetworkAvailable(ctx))
         new tripList().execute();
-        tripsInDb = userService.getallshareTrips(tripInfo.getTripId(), true, null,false);
-        for (int i = 0; i < tripsInDb.size(); i++) {
-            Double sum = userService.getTripUserEntryAmount
-                    (tripsInDb.get(i).getTripId(), tripsInDb.get(i).getCompanyId(), true) - userService.getTripUserEntryAmount
-                    (tripsInDb.get(i).getTripId(), tripsInDb.get(i).getCompanyId(), false);
-            tripsInDb.get(i).setAmount(String.valueOf(sum));
+        else {
+            tripsInDb = userService.getallshareTrips(tripInfo.getTripId(), true, null, false);
+            for (int i = 0; i < tripsInDb.size(); i++) {
+                Double sum = userService.getTripUserEntryAmount
+                        (tripsInDb.get(i).getTripId(), tripsInDb.get(i).getCompanyId(), true) - userService.getTripUserEntryAmount
+                        (tripsInDb.get(i).getTripId(), tripsInDb.get(i).getCompanyId(), false);
+                tripsInDb.get(i).setAmount(String.valueOf(sum));
+            }
+            savedTripsAdapter = new SavedEmailsAdapter(tripsInDb, ctx);
+            lvSavedTrips.setAdapter(savedTripsAdapter);
         }
-        savedTripsAdapter = new SavedEmailsAdapter(tripsInDb, ctx);
-        lvSavedTrips.setAdapter(savedTripsAdapter);
+
         /*Double total = (userService.getperheadcontri(tripInfo.getTripId(), null, true, true)) - (userService.getperheadcontri(tripInfo.getTripId(), null, true, false));
         Double perhead = total / tripsInDb.size();
         tvHead.setText("TOTAL : " + new DecimalFormat("##.##").format(total) + " Per head:" + new DecimalFormat("##.##").format(perhead));*/
@@ -210,7 +214,7 @@ public class SavedEmails extends Fragment {
             if (iserr) {
                 //showErrorMessage(true, response);
             } else {
-                tripsInDb = userService.getallshareTrips(tripInfo.getTripId(), true, null,false);
+                tripsInDb = userService.getallshareTrips(tripInfo.getTripId(), true, null, false);
                 for (int i = 0; i < tripsInDb.size(); i++) {
                     Double sum = userService.getTripUserEntryAmount
                             (tripsInDb.get(i).getTripId(), tripsInDb.get(i).getCompanyId(), true) - userService.getTripUserEntryAmount
@@ -263,10 +267,10 @@ public class SavedEmails extends Fragment {
                                 tripShare.setCompanyId(jochild.getString(VariableClass.ResponseVariables.COMPANY_ID));
                                 tripShare.setCompanyType(jochild.getString(VariableClass.ResponseVariables.COMPANY_TYPE));
                                 savedEmails.add(tripShare);
-                                tripsInDb = userService.getallshareTrips(tripInfo.getTripId(), false, tripShare.getCompanyId(),false);
+                                tripsInDb = userService.getallshareTrips(tripInfo.getTripId(), false, tripShare.getCompanyId(), false);
                                 if (tripsInDb.size() > 0) {
                                     Log.e("will Update", "update");
-                                    userService.updateTripInfoshare(tripShare, tripShare.getTripId(), tripShare.getCompanyId());
+                                    userService.updateTripInfoshare(tripShare, tripShare.getTripId(), tripShare.getCompanyId(), tripShare.getEmail());
                                 } else {
                                     userService.addtripshareInfodto(tripShare);
                                 }

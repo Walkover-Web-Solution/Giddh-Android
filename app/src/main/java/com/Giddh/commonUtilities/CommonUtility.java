@@ -54,7 +54,7 @@ public class CommonUtility {
     public final static String BUGSENSELIVE = "e16d9e0b";
     public final static String BUGSENSEID_TEST = "6fd281fc";
     public static MaterialDialog dialog;
-    public static Boolean firstTIme;
+    public static int stack;
    // public static int summary_stack=0;
     public static ArrayList<SummaryAccount> summary_stack =new ArrayList<>(3);
 

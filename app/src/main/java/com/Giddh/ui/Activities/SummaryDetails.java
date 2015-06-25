@@ -50,7 +50,6 @@ public class SummaryDetails extends AppCompatActivity {
     SummaryDetailsAdapter summaryDetailsAdapter;
     View addnewTransaction;
     TextView opening, closing;
-    Activity[] lastfour_screen = new Activity[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class SummaryDetails extends AppCompatActivity {
         userService = UserService.getUserServiceInstance(ctx);
         summaryAccount = (SummaryAccount) getIntent().getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
         if (CommonUtility.summary_stack.size() == 0) {
-            CommonUtility.firstTIme = true;
+            Prefs.setFirsttime(ctx, "1");
         }
         listExpandable = (ExpandableListView) findViewById(R.id.details_list);
         emp_view = (TextView) findViewById(R.id.emp_view);
@@ -78,11 +77,17 @@ public class SummaryDetails extends AppCompatActivity {
                 .findViewById(R.id.addtransactions);
         opening = (TextView) mCustomView.findViewById(R.id.op_balance);
         closing = (TextView) mCustomView.findViewById(R.id.cl_balance);
+        if (summaryAccount.getGroup() != null) {
+            opening.setVisibility(View.GONE);
+            closing.setVisibility(View.GONE);
+        }
         mTitleTextView.setText(CommonUtility.getfonttext(summaryAccount.getAccountName(), SummaryDetails.this));
         String openingb = userService.getopening_balance(summaryAccount.getAccountName());
         Double val1 = userService.getclosing_bal(summaryAccount.getAccountId(), false);
         Double val2 = userService.getclosing_bal(summaryAccount.getAccountId(), true);
         Double closingb = Double.valueOf(openingb) - (val1 - val2);
+        if (closingb < 0)
+            closingb = closingb * -1;
         opening.setText("Opening =" + openingb);
         closing.setText("Closing  =" + closingb);
         //imageButton.setBackgroundResource(R.drawable.small_summary);
@@ -172,14 +177,14 @@ public class SummaryDetails extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 SummaryAccount summaryAcc;
+                Prefs.setFirsttime(ctx, "0");
                 summaryAcc = (SummaryAccount) summaryDetailsAdapter.getChild(groupPosition, childPosition);
                 Intent detail = new Intent(ctx, SummaryDetails.class);
                 summaryAcc.setAccountName(userService.getaccountnameorId(summaryAcc.getAccountId()).getAccountName());
                 detail.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 detail.putExtra(VariableClass.Vari.SELECTEDDATA, summaryAcc);
                 ctx.startActivity(detail);
-                CommonUtility.firstTIme = false;
-                if (CommonUtility.summary_stack.size() == 4) {
+                if (CommonUtility.summary_stack.size() == 3) {
                     CommonUtility.summary_stack.remove(0);
                     CommonUtility.summary_stack.add(summaryAccount);
                 } else {
@@ -263,20 +268,28 @@ public class SummaryDetails extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (CommonUtility.firstTIme) {
+        if (Prefs.getFirsttime(ctx).equals("1")) {
             Intent intent = new Intent(getBaseContext(), SummaryInfo.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             SummaryDetails.this.finish();
         } else {
-            Intent intent = new Intent(getBaseContext(), SummaryDetails.class);
-            intent.putExtra(VariableClass.Vari.SELECTEDDATA, CommonUtility.summary_stack.get(CommonUtility.summary_stack.size() - 1));
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            CommonUtility.summary_stack.get(CommonUtility.summary_stack.size() - 1)
-                    .setAccountName(userService.getaccountnameorId(CommonUtility.summary_stack.get(CommonUtility.summary_stack.size() - 1).getAccountId()).getAccountName());
-            CommonUtility.summary_stack.remove(CommonUtility.summary_stack.size() - 1);
-            startActivity(intent);
-            SummaryDetails.this.finish();
+            try {
+                Intent intent = new Intent(getBaseContext(), SummaryDetails.class);
+                intent.putExtra(VariableClass.Vari.SELECTEDDATA, CommonUtility.summary_stack.get(CommonUtility.summary_stack.size() - 1));
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                CommonUtility.summary_stack.get(CommonUtility.summary_stack.size() - 1)
+                        .setAccountName(userService.getaccountnameorId(CommonUtility.summary_stack.get(CommonUtility.summary_stack.size() - 1).getAccountId()).getAccountName());
+                CommonUtility.summary_stack.remove(CommonUtility.summary_stack.size() - 1);
+                startActivity(intent);
+                SummaryDetails.this.finish();
+            }catch (Exception e){
+                Intent intent = new Intent(getBaseContext(), SummaryInfo.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                SummaryDetails.this.finish();
+            }
+
         }
     }
 }

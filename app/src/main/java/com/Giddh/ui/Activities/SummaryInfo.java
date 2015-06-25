@@ -5,15 +5,20 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -29,8 +34,10 @@ import android.widget.TextView;
 
 import com.Giddh.R;
 import com.Giddh.adapters.GroupsSummaryAdapter;
+import com.Giddh.commonUtilities.Apis;
 import com.Giddh.commonUtilities.ClipRevealFrame;
 import com.Giddh.commonUtilities.CommonUtility;
+import com.Giddh.commonUtilities.FontTextView;
 import com.Giddh.commonUtilities.NonScrollListView;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.commonUtilities.VariableClass;
@@ -39,19 +46,27 @@ import com.Giddh.dtos.EntryInfo;
 import com.Giddh.dtos.GroupInfo;
 import com.Giddh.dtos.SummaryAccount;
 import com.Giddh.dtos.SummaryGroup;
+import com.Giddh.dtos.TripInfo;
 import com.Giddh.util.AnimatorUtils;
 import com.Giddh.util.UserService;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.ogaclejapan.arclayout.ArcLayout;
 import com.splunk.mint.Mint;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SummaryInfo extends AppCompatActivity {
     Context ctx;
     ActionBar actionBar;
-    TextView tvExpense, tvTotalvalueIE,
-            tvTotalEI, tvincomeVal, tvExpenseVal, tvAccTotal, tvAccVal, tvamontLiabVal;
+    TextView tvExpense,
+            tvAccTotal, tvamontLiabVal;
+    FontTextView tvincomeVal, tvExpenseVal, tvTotalvalueIE, tvAccVal, tvTotalEI;
     UserService userService;
     RelativeLayout rlIncome, rlExpense;
     NonScrollListView lvaccAssets, lvaccLiab;
@@ -68,6 +83,11 @@ public class SummaryInfo extends AppCompatActivity {
     LinearLayout mSummary_root;
     LinearLayout home, transactions, settings, trips;
     LinearLayout liabview;
+    TripInfo tripInfo;
+    ArrayList<TripInfo> savedTrips;
+    ArrayList<TripInfo> tripsInDb;
+    private static long back_pressed;
+    DecimalFormat decimalFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +102,14 @@ public class SummaryInfo extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
         View mCustomView = mInflater.inflate(R.layout.custom_action_bar, null);
-        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
+        FontTextView mTitleTextView = (FontTextView) mCustomView.findViewById(R.id.title_text);
         mTitleTextView.setText("Summary");
         final ImageButton imageButton = (ImageButton) mCustomView
                 .findViewById(R.id.imageView1);
         imageButton.setBackgroundResource(R.drawable.menu_actionbar);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        final FrameLayout btnlayout = (FrameLayout) mCustomView
+                .findViewById(R.id.button_layout);
+        btnlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onRevealClick(view);
@@ -102,6 +124,9 @@ public class SummaryInfo extends AppCompatActivity {
                 }
             }
         });
+        decimalFormat = new DecimalFormat("#.00");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
         actionBar.setCustomView(mCustomView);
         actionBar.setDisplayShowCustomEnabled(true);
         home = (LinearLayout) findViewById(R.id.home_button);
@@ -115,29 +140,31 @@ public class SummaryInfo extends AppCompatActivity {
         revealButton = (ImageButton) findViewById(R.id.reveal_button);
         mCenterItem = (Button) findViewById(R.id.center_item);
         tvAccTotal = (TextView) findViewById(R.id.amount_assets);
-        tvAccVal = (TextView) findViewById(R.id.amount_assets_value);
+        tvAccVal = (FontTextView) findViewById(R.id.amount_assets_value);
         liabview = (LinearLayout) findViewById(R.id.list2);
         sumList = new ArrayList<>();
+        savedTrips = new ArrayList<>();
+        tripsInDb = new ArrayList<>();
         actionBar.setTitle(CommonUtility.getfonttext("Summary", SummaryInfo.this));
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));
-        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/fontawesome_webfont.ttf");
+
         lvaccAssets = (NonScrollListView) findViewById(R.id.list_assets);
-        tvincomeVal = (TextView) findViewById(R.id.income_amount);
-        tvExpenseVal = (TextView) findViewById(R.id.expense_amount);
+        tvincomeVal = (FontTextView) findViewById(R.id.income_amount);
+        tvExpenseVal = (FontTextView) findViewById(R.id.expense_amount);
         tvExpense = (TextView) findViewById(R.id.income_amount);
         rlIncome = (RelativeLayout) findViewById(R.id.income);
         rlExpense = (RelativeLayout) findViewById(R.id.expe);
         lvaccLiab = (NonScrollListView) findViewById(R.id.list_liab);
-        tvTotalvalueIE = (TextView) findViewById(R.id.total_amount_in_ex_value);
-        tvTotalEI = (TextView) findViewById(R.id.total_amount_in_ex);
-        tvamontLiabVal = (TextView) findViewById(R.id.amount_liab_value);
-        tvExpense.setTypeface(font);
+        tvTotalvalueIE = (FontTextView) findViewById(R.id.total_amount_in_ex_value);
+        tvTotalEI = (FontTextView) findViewById(R.id.total_amount_in_ex);
+        tvamontLiabVal = (FontTextView) findViewById(R.id.amount_liab_value);
+
         Double income = userService.getSumExpenceIncomeEntry("transactionType", "0");
         Double expense = userService.getSumExpenceIncomeEntry("transactionType", "1");
         Double diff = (income - expense);
-        tvTotalvalueIE.setText("" + diff);
-        tvExpenseVal.setText("" + expense + " " + Prefs.getCurrency(ctx));
-        tvincomeVal.setText("" + income + " " + Prefs.getCurrency(ctx));
+
+        tvExpenseVal.setText("" + decimalFormat.format(expense) + " " + Prefs.getCurrency(ctx));
+        tvincomeVal.setText("" + decimalFormat.format(income) + " " + Prefs.getCurrency(ctx));
         if (diff < 0) {
             tvTotalEI.setText("Loss");
         } else {
@@ -146,6 +173,9 @@ public class SummaryInfo extends AppCompatActivity {
             } else
                 tvTotalEI.setText("Profit");
         }
+        if (diff < 0)
+            diff = diff * -1;
+        tvTotalvalueIE.setText("" + decimalFormat.format(diff));
         getclosingBal();
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +198,7 @@ public class SummaryInfo extends AppCompatActivity {
                     Intent intent = new Intent(ctx, TripHome.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                   // SummaryInfo.this.finish();
+                    // SummaryInfo.this.finish();
                 }
             }
         });
@@ -289,6 +319,10 @@ public class SummaryInfo extends AppCompatActivity {
                 return true;
             }
         });*/
+        if (CommonUtility.isNetworkAvailable(ctx)) {
+            new tripList().execute();
+        }
+
     }
 
     private ArrayList<SummaryGroup> getclosingBal() {
@@ -328,9 +362,17 @@ public class SummaryInfo extends AppCompatActivity {
                 summaryAccounts.add(summaryAccount);
             }
             if (summaryGroup.getGroupName().equals("Assets")) {
-                tvAccVal.setText(String.valueOf(closingBalGrp));
+                tvAccVal.setText(decimalFormat.format(closingBalGrp));
+               /* if (closingBalGrp < 0)
+                    tvAccVal.setText(String.valueOf(closingBalGrp * -1));
+                else
+                    tvAccVal.setText(String.valueOf(closingBalGrp));*/
             } else if (summaryGroup.getGroupName().equals("Liability")) {
-                tvamontLiabVal.setText(String.valueOf(closingBalGrp));
+                tvamontLiabVal.setText(decimalFormat.format(closingBalGrp * -1));
+               /* if (closingBalGrp < 0)
+                    tvamontLiabVal.setText(String.valueOf(closingBalGrp * -1));
+                else
+                    tvamontLiabVal.setText(String.valueOf(closingBalGrp));*/
             }
             //   Log.e("Total Debit Sum", "Total sum = "+ sumDebit);
             // Log.e("Total Credit Sum", "Total sum = "+ sumCredit);
@@ -483,5 +525,103 @@ public class SummaryInfo extends AppCompatActivity {
             });
         }
         return reveal;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (back_pressed + 2000 > System.currentTimeMillis()) super.onBackPressed();
+        else {
+            new AlertDialogWrapper.Builder(ctx)
+                    .setTitle("Are you sure you want to exit?")
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SummaryInfo.this.finish();
+                }
+            }).show();
+            back_pressed = System.currentTimeMillis();
+        }
+    }
+
+    class tripList extends AsyncTask<Void, Void, Void> {
+        String response = null;
+        Boolean iserr = false;
+        JSONArray japarent = null;
+
+        @Override
+        protected void onPostExecute(Void result) {
+            CommonUtility.dialog.dismiss();
+            if (iserr) {
+                //showErrorMessage(true, response);
+            } else {
+            }
+            super.onPostExecute(result);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // showErrorMessage(false, "");
+            CommonUtility.show_PDialog(ctx);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            response = Apis.getApisInstance(ctx).getTripList();
+            if (!response.equals("")) {
+                JSONObject joparent = null;
+                JSONObject jochild = null;
+                //JSONArray japarent = null;
+                try {
+                    joparent = new JSONObject(response);
+                    if (joparent.getString(VariableClass.ResponseVariables.RESPONSE).equals(Apis.ErrorResponse)) {
+                        iserr = true;
+                        jochild = joparent.getJSONObject(VariableClass.ResponseVariables.RESPONSEMESSAGE);
+                        response = jochild.getString(VariableClass.ResponseVariables.ERRORMESSAGE);
+                    }
+                    //success response
+                    else if (joparent.getString(VariableClass.ResponseVariables.RESPONSE).equals(Apis.SuccessResponse)) {
+                        userService.deleteAlltrips();
+                        japarent = joparent.getJSONArray(VariableClass.ResponseVariables.DATA);
+                        if (japarent.length() > 0)
+                            for (int i = 0; i < japarent.length(); i++) {
+                                tripInfo = new TripInfo();
+                                jochild = japarent.getJSONObject(i);
+                                tripInfo.setTripId(jochild.getString(VariableClass.ResponseVariables.TRIP_ID));
+                                tripInfo.setOwner(jochild.getString(VariableClass.ResponseVariables.OWNER));
+                                tripInfo.setTripName(jochild.getString(VariableClass.ResponseVariables.TRIP_NAME));
+                                savedTrips.add(tripInfo);
+                                tripsInDb = userService.getallTripInfo(tripInfo.getTripId(), false);
+                                if (savedTrips != null)
+                                    tripInfo.setSavedTrips(savedTrips);
+                                if (tripsInDb.size() > 0) {
+                                    userService.updateTripInfo(tripInfo, tripInfo.getTripId());
+                                } else {
+                                    userService.addTripInfo(tripInfo);
+                                }
+                            }
+                    }
+                } catch (JSONException e) {
+                    iserr = true;
+                    response = getResources().getString(R.string.parse_error);
+                    e.printStackTrace();
+                }
+            } else {
+                iserr = true;
+                response = getResources().getString(R.string.server_error);
+            }
+            return null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        new tripList().cancel(true);
     }
 }
