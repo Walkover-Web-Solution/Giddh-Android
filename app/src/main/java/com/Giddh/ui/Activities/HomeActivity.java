@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +32,6 @@ import com.Giddh.dtos.CompanyDetails;
 import com.Giddh.dtos.EntryInfo;
 import com.Giddh.dtos.GroupDetails;
 import com.Giddh.dtos.GroupInfo;
-import com.Giddh.dtos.TripInfo;
 import com.Giddh.util.UserService;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -78,13 +78,13 @@ public class HomeActivity extends AppCompatActivity {
         companyList = (ListView) findViewById(R.id.company_list);
         error_FontTextView = (TextView) findViewById(R.id.error_text);
         error_layout = (RelativeLayout) findViewById(R.id.error_layout);
-
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.drawable.resize_white_logo);
-        actionBar.setTitle(CommonUtility.getfonttext("Giddh", HomeActivity.this));
+        //   actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + CommonUtility.getfonttext(" Giddh", HomeActivity.this) + "</font>"));
+        actionBar.setTitle(CommonUtility.getfonttext(" Giddh", HomeActivity.this));
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));
         companies = new ArrayList<>();
         if (CommonUtility.isNetworkAvailable(ctx)) {
@@ -105,6 +105,7 @@ public class HomeActivity extends AppCompatActivity {
                             userService.getSumExpenceIncomeEntry("transactionType", "1") != 0) {
                         Intent intent = new Intent(ctx, SummaryInfo.class);
                         startActivity(intent);
+                        HomeActivity.this.finish();
                     } else {
                         if (VariableClass.Vari.LOGIN_FIRST_TIME) {
                             int bank = matdialog("This amount will be use as your opening balance "
@@ -159,9 +160,10 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            CommonUtility.dialog.dismiss();
+
 
             companies = userService.getcompaniesList(Prefs.getEmailId(ctx));
+            Prefs.setCompanysize(ctx, String.valueOf(companies.size()));
             if (iserr) {
                 adapter = new CompanyListAdapter(companies, ctx);
                 companyList.setAdapter(adapter);
@@ -188,7 +190,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             showErrorMessage(false, "");
-            CommonUtility.show_PDialog(ctx);
+
             super.onPreExecute();
         }
 
@@ -399,7 +401,7 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            CommonUtility.dialog.dismiss();
+
             CommonUtility.syncwithServer(ctx);
             super.onPostExecute(result);
         }
@@ -407,7 +409,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             // showErrorMessage(false, "");
-            CommonUtility.show_PDialog(ctx);
+
             super.onPreExecute();
         }
 
@@ -441,7 +443,7 @@ public class HomeActivity extends AppCompatActivity {
                             grpName = CommonUtility.getgroupIdName(grpName);
                             for (int j = 0; j < acc.getGroupDetail().get(i).getAccountDetails().size(); j++) {
                                 Accounts accounts = new Accounts();
-                                AccountDetails accountDetails ;
+                                AccountDetails accountDetails;
                                 accountDetails = acc.getGroupDetail().get(i).getAccountDetails().get(j);
                                 accounts.setGroupId(grpName);
                                 accounts.setAccountName(accountDetails.getAccountName());

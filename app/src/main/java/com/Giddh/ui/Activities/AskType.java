@@ -4,10 +4,15 @@ package com.Giddh.ui.Activities;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,8 +37,10 @@ import com.Giddh.dtos.Accounts;
 import com.Giddh.dtos.CompanyDetails;
 import com.Giddh.dtos.EntryInfo;
 import com.Giddh.dtos.GroupDetails;
+import com.Giddh.dtos.SummaryAccount;
 import com.Giddh.dtos.TripInfo;
 import com.Giddh.util.UserService;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,14 +50,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Iterator;
+
+import nl.changer.polypicker.ImagePickerActivity;
+import nl.changer.polypicker.utils.ImageInternalFetcher;
 
 public class AskType extends Activity {
     RelativeLayout receivingMoney, givingMoney, askMoneyroot, flagLayout;
     Context context;
-    TextView selectDate, currency;
+    TextView selectDate, currency, tvrece, tvgiv;
     TripInfo tripInfo;
     Animation slide_down, slide_up, slide_back_up, slide_back_down;
     GridView gvType_tags;
@@ -62,34 +77,46 @@ public class AskType extends Activity {
     ArrayList<TripInfo> savedTrips;
     ArrayList<TripInfo> tripsInDb;
     EntryInfo entryInfo;
+    ImageView mUploadReceipt;
     static Boolean receiving;
+    private static long back_pressed;
+    private static final String TAG = AskType.class.getSimpleName();
+    private static final int INTENT_REQUEST_GET_IMAGES = 13;
+    HashSet<Uri> mMedia = new HashSet<>();
+    SummaryAccount summaryEntry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ask_type);
         context = AskType.this;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+            summaryEntry = (SummaryAccount) getIntent().getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
         Mint.initAndStartSession(context, CommonUtility.BUGSENSEID);
         Mint.setUserIdentifier(Prefs.getEmailId(context));
         receivingMoney = (RelativeLayout) findViewById(R.id.receving_money);
         givingMoney = (RelativeLayout) findViewById(R.id.giving_money);
         askMoneyroot = (RelativeLayout) findViewById(R.id.ask_money);
         flagLayout = (RelativeLayout) findViewById(R.id.flag_layout);
+        tvrece = (TextView) findViewById(R.id.tvreceiving);
+        tvgiv = (TextView) findViewById(R.id.tvgiving);
+        if (summaryEntry != null) {
+            tvrece.setText("Receiving " + summaryEntry.getAccountName());
+            tvgiv.setText("Giving  " + summaryEntry.getAccountName());
+        }
         selectDate = (TextView) findViewById(R.id.select_date);
         selectDate.setPaintFlags(selectDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         gvType_tags = (GridView) findViewById(R.id.flags);
         enteredAmount = (EditText) findViewById(R.id.amount);
         currency = (TextView) findViewById(R.id.sign);
+        mUploadReceipt = (ImageView) findViewById(R.id.btn_receipt);
         currency.setText(Prefs.getCurrency(context));
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         cat = new ArrayList<>();
         userService = UserService.getUserServiceInstance(context);
         savedTrips = new ArrayList<>();
         tripsInDb = new ArrayList<>();
-        if (CommonUtility.isNetworkAvailable(context)) {
-            new AccountList().execute();
-            new tripList().execute();
-        }
         slide_down = AnimationUtils.loadAnimation(this,
                 R.anim.slide_down);
         slide_up = AnimationUtils.loadAnimation(this,
@@ -98,17 +125,150 @@ public class AskType extends Activity {
                 R.anim.slide_back_up);
         slide_back_down = AnimationUtils.loadAnimation(context,
                 R.anim.slide_back_down);
+
         receivingMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                receiving = true;
-                givingMoney.startAnimation(slide_back_up);
-                givingMoney.setVisibility(View.GONE);
-                receivingMoney.startAnimation(slide_back_down);
-                receivingMoney.setVisibility(View.GONE);
-                askMoneyroot.setVisibility(View.GONE);
-                flagLayout.setVisibility(View.VISIBLE);
-                setgridAdapter("0");
+                if (summaryEntry != null) {
+                    summaryEntry.setTransactionType("0");
+                    Intent addentry = new Intent(context, AddEntryByLedger.class);
+                    addentry.putExtra(VariableClass.Vari.SELECTEDDATA, summaryEntry);
+                    startActivity(addentry);
+                    AskType.this.finish();
+                } else {
+                    receiving = true;
+                    givingMoney.startAnimation(slide_back_up);
+                    givingMoney.setVisibility(View.GONE);
+                    receivingMoney.startAnimation(slide_back_down);
+                    receivingMoney.setVisibility(View.GONE);
+                    askMoneyroot.setVisibility(View.GONE);
+                    flagLayout.setVisibility(View.VISIBLE);
+                    setgridAdapter("0");
+                }
+
+            }
+        });
+        givingMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (summaryEntry != null) {
+                    summaryEntry.setTransactionType("1");
+                    Intent addentry = new Intent(context, AddEntryByLedger.class);
+                    addentry.putExtra(VariableClass.Vari.SELECTEDDATA, summaryEntry);
+                    startActivity(addentry);
+                    AskType.this.finish();
+                } else {
+                    receiving = false;
+                    givingMoney.startAnimation(slide_back_up);
+                    givingMoney.setVisibility(View.GONE);
+                    receivingMoney.startAnimation(slide_back_down);
+                    receivingMoney.setVisibility(View.GONE);
+                    askMoneyroot.setVisibility(View.GONE);
+                    flagLayout.setVisibility(View.VISIBLE);
+                    // footerFlag.setBackgroundColor(getResources().getColor(R.color.orange_foot));
+                    setgridAdapter("1");
+                }
+            }
+        });
+        final View actionB = findViewById(R.id.action_b);
+        final View actionA = findViewById(R.id.action_a);
+        final View actionC = findViewById(R.id.action_c);
+        final View actionD = findViewById(R.id.action_d);
+        actionB.setBackgroundResource(R.drawable.summary_icon);
+        actionA.setBackgroundResource(R.drawable.add_trip);
+        actionC.setBackgroundResource(R.drawable.setting_icon);
+        actionD.setBackgroundResource(R.drawable.company);
+        actionC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, SettingsPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                AskType.this.finish();
+            }
+        });
+        actionB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, SummaryInfo.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                AskType.this.finish();
+            }
+        });
+        actionA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userService.getallTripInfo(null, true).size() > 0) {
+                    Intent multi = new Intent(context, SavedTrips.class);
+                    multi.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(multi);
+                    AskType.this.finish();
+                } else {
+                    Intent intent = new Intent(context, TripHome.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        actionD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                AskType.this.finish();
+
+            }
+        });
+        if (CommonUtility.isNetworkAvailable(context)) {
+            CommonUtility.syncwithServer(context);
+            new DelEntries().execute();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == INTENT_REQUEST_GET_IMAGES) {
+                Parcelable[] parcelableUris = data.getParcelableArrayExtra(ImagePickerActivity.EXTRA_IMAGE_URIS);
+
+                if (parcelableUris == null) {
+                    return;
+                }
+
+                // Java doesn't allow array casting, this is a little hack
+                Uri[] uris = new Uri[parcelableUris.length];
+                System.arraycopy(parcelableUris, 0, uris, 0, parcelableUris.length);
+
+                if (uris != null) {
+                    mMedia = new HashSet<>();
+                    for (Uri uri : uris) {
+                        Log.i(TAG, " uri: " + uri);
+                        mMedia.add(uri);
+                    }
+                    showMedia();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (CommonUtility.isNetworkAvailable(context) && summaryEntry != null) {
+            new AccountList().execute();
+            new tripList().execute();
+        }
+        mUploadReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             /*   Intent intent = new Intent(context, ImagePickerActivity.class);
+                startActivityForResult(intent, INTENT_REQUEST_GET_IMAGES);*/
+                Intent intent = new Intent(context, ImagePickerActivity.class);
+                intent.putExtra("nl.changer.changer.nl.polypicker.extra.selection_limit", 1);
+                startActivityForResult(intent, INTENT_REQUEST_GET_IMAGES);
+
             }
         });
         setDateTimeField();
@@ -150,7 +310,8 @@ public class AskType extends Activity {
                                     }
                                 }
                             }).show();
-                } else if (!enteredAmount.getText().toString().equals("") && enteredAmount.getText().toString() != null && Double.valueOf(enteredAmount.getText().toString()) > 0) {
+                } else if (!enteredAmount.getText().toString().equals("") && enteredAmount.getText().toString() != null
+                        && Double.valueOf(enteredAmount.getText().toString()) > 0) {
                     entryInfo.setCompanyId(Prefs.getCompanyId(context));
                     entryInfo.setDate(selectDate.getText().toString());
                     if (receiving) {
@@ -209,7 +370,6 @@ public class AskType extends Activity {
                             Intent addbank = new Intent(context, AddBankDetails.class);
                             addbank.putExtra("value", true);
                             addbank.putExtra(VariableClass.Vari.SELECTEDDATA, true);
-
                             startActivity(addbank);
                         }
                     } else {
@@ -234,67 +394,32 @@ public class AskType extends Activity {
                 }
             }
         });
-        givingMoney.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                receiving = false;
-                givingMoney.startAnimation(slide_back_up);
-                givingMoney.setVisibility(View.GONE);
-                receivingMoney.startAnimation(slide_back_down);
-                receivingMoney.setVisibility(View.GONE);
-                askMoneyroot.setVisibility(View.GONE);
-                flagLayout.setVisibility(View.VISIBLE);
-                // footerFlag.setBackgroundColor(getResources().getColor(R.color.orange_foot));
-                setgridAdapter("1");
-            }
-        });
-        final View actionB = findViewById(R.id.action_b);
-        final View actionA = findViewById(R.id.action_a);
-        final View actionC = findViewById(R.id.action_c);
-        final View actionD = findViewById(R.id.action_d);
-        actionB.setBackgroundResource(R.drawable.summary_icon);
-        actionA.setBackgroundResource(R.drawable.add_trip);
-        actionC.setBackgroundResource(R.drawable.setting_icon);
-        actionD.setBackgroundResource(R.drawable.company);
-        actionC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, SettingsPage.class);
-                startActivity(intent);
-            }
-        });
-        actionB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, SummaryInfo.class);
-                startActivity(intent);
-            }
-        });
-        actionA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (userService.getallTripInfo(null, true).size() > 0) {
-                    Intent multi = new Intent(context, SavedTrips.class);
-                    startActivity(multi);
-                } else {
-                    Intent intent = new Intent(context, TripHome.class);
-                    startActivity(intent);
-                }
-            }
-        });
-        actionD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                AskType.this.finish();
 
+    }
+
+    private void showMedia() {
+
+        Iterator<Uri> iterator = mMedia.iterator();
+        ImageInternalFetcher imageFetcher = new ImageInternalFetcher(this, 500);
+        while (iterator.hasNext()) {
+            Uri uri = iterator.next();
+
+            // showImage(uri);
+            Log.i(TAG, " uri: " + uri);
+
+            if (!uri.toString().contains("content://")) {
+                // probably a relative uri
+                uri = Uri.fromFile(new File(uri.toString()));
             }
-        });
-        if (CommonUtility.isNetworkAvailable(context)) {
-            CommonUtility.syncwithServer(context);
-            new DelEntries().execute();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                mUploadReceipt.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //imageFetcher.loadImage(uri, mUploadReceipt);
+
         }
     }
 
@@ -342,7 +467,7 @@ public class AskType extends Activity {
 
         @Override
         protected void onPostExecute(Void result) {
-            CommonUtility.dialog.dismiss();
+
             if (iserr) {
                 //showErrorMessage(true, response);
             } else {
@@ -353,7 +478,7 @@ public class AskType extends Activity {
         @Override
         protected void onPreExecute() {
             // showErrorMessage(false, "");
-            CommonUtility.show_PDialog(context);
+
             super.onPreExecute();
         }
 
@@ -469,9 +594,9 @@ public class AskType extends Activity {
 
         @Override
         protected void onPostExecute(Void result) {
-            // CommonUtility.dialog.dismiss();
+
             if (iserr) {
-                //showErrorMessage(true, response);
+
             } else {
             }
             super.onPostExecute(result);
@@ -594,12 +719,30 @@ public class AskType extends Activity {
             startActivity(i);
             AskType.this.finish();
         }*/
-        if (flagLayout.getVisibility()==View.VISIBLE) {
+        if (flagLayout.getVisibility() == View.VISIBLE) {
             Intent i = new Intent(context, AskType.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             AskType.this.finish();
+        } else {
+            if (back_pressed + 2000 > System.currentTimeMillis()) super.onBackPressed();
+            else {
+                new AlertDialogWrapper.Builder(context)
+                        .setTitle("Are you sure you want to exit?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AskType.this.finish();
+                    }
+                }).show();
+                back_pressed = System.currentTimeMillis();
+            }
         }
     }
 }

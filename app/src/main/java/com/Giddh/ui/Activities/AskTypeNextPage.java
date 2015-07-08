@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.Giddh.R;
 import com.Giddh.adapters.FlagTypAdapter;
@@ -93,16 +94,21 @@ public class AskTypeNextPage extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (previousitemview == view && colored) {
+                    (view.findViewById(R.id.tick_image)).setVisibility(View.GONE);
                     view.setBackgroundColor(getResources().getColor(R.color.transparent));
                     colored = false;
                     entryInfo.setSelected(false);
                 } else {
-                    view.setBackgroundColor(getResources().getColor(R.color.orange_footer_head));
+                    (view.findViewById(R.id.tick_image)).setVisibility(View.VISIBLE);
+                    view.setBackgroundColor(getResources().getColor(R.color.light_bg));
                     colored = true;
                     entryInfo.setSelected(true);
                 }
-                if (previousitemview != null && previousitemview != view)
+                if (previousitemview != null && previousitemview != view) {
                     previousitemview.setBackgroundColor(getResources().getColor(R.color.transparent));
+                    (previousitemview.findViewById(R.id.tick_image)).setVisibility(View.GONE);
+                }
+
                 previousitemview = view;
                 accounts = (Accounts) parent.getItemAtPosition(position);
                 if (entryInfo.getTransactionType().equals("0")) {
@@ -116,17 +122,20 @@ public class AskTypeNextPage extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (previousitemviewtrip == view && colored) {
+                    (view.findViewById(R.id.tick_image)).setVisibility(View.GONE);
                     view.setBackgroundColor(getResources().getColor(R.color.transparent));
                     colored = false;
                     entryInfo.setTripId("");
                 } else {
-                    view.setBackgroundColor(getResources().getColor(R.color.orange_footer_head));
+                    (view.findViewById(R.id.tick_image)).setVisibility(View.VISIBLE);
+                    view.setBackgroundColor(getResources().getColor(R.color.light_bg));
                     colored = true;
                     tripInfo = (TripInfo) parent.getItemAtPosition(position);
                     entryInfo.setTripId(tripInfo.getTripId());
                 }
                 if (previousitemviewtrip != null && previousitemviewtrip != view) {
                     previousitemviewtrip.setBackgroundColor(getResources().getColor(R.color.transparent));
+                    (previousitemviewtrip.findViewById(R.id.tick_image)).setVisibility(View.GONE);
                 }
                 previousitemviewtrip = view;
             }
@@ -134,29 +143,20 @@ public class AskTypeNextPage extends Activity {
         ibSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!edDescription.getText().toString().equals("") &&
-                        edDescription.getText().toString() != null) {
-                    entryInfo.setDescription(edDescription.getText().toString());
-                }
-
                 if ((entryInfo.getDebitAccount() != null)
                         && (entryInfo.getCreditAccount() != null) && entryInfo.getSelected()) {
                     ibSave.setEnabled(false);
                     CommonUtility.show_PDialog(ctx);
                     CommonUtility.syncwithServer(ctx);
+                    if (!edDescription.getText().toString().equals("") &&
+                            edDescription.getText().toString() != null) {
+                        entryInfo.setDescription(edDescription.getText().toString());
+                    }
                     if (CommonUtility.isNetworkAvailable(ctx)) {
-                        try {
-                            new DoEntry().execute().get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
+                        new DoEntry().execute();
                     } else {
                         new BtnSave().execute();
                     }
-
-
                 } else {
                     CommonUtility.showCustomAlertForContactsError(ctx, "Please select category first");
                 }
@@ -231,14 +231,12 @@ public class AskTypeNextPage extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (CommonUtility.dialog != null)
-                CommonUtility.dialog.cancel();
             CommonUtility.showCustomAlertForContactsError(ctx, "Entry Added");
             Intent menu = new Intent(ctx, AskType.class);
             menu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             menu.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(menu);
-            AskTypeNextPage.this.finish();
+            // AskTypeNextPage.this.finish();
         }
 
         @Override

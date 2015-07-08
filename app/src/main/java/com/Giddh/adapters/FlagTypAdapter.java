@@ -75,6 +75,7 @@ public class FlagTypAdapter extends BaseAdapter {
             viewholder = new ViewHolder();
             viewholder.tvName = ((TextView) paramView.findViewById(R.id.grid_text));
             viewholder.imageTag = ((ImageView) paramView.findViewById(R.id.grid_image));
+            viewholder.tick = ((ImageView) paramView.findViewById(R.id.tick_image));
             paramView.setTag(viewholder);
             Log.e("creating new row" + dto.getAccountName(), "creating row");
         } else {
@@ -148,5 +149,6 @@ public class FlagTypAdapter extends BaseAdapter {
 
         TextView tvName;
         ImageView imageTag;
+        ImageView tick;
     }
 }

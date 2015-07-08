@@ -14,7 +14,7 @@
         android:id="@+id/pager_header"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/brown_balance"
+        android:background="@color/head_list"
         android:layout_gravity="top"
         android:textColor="@color/black_name"
         android:paddingBottom="4dp"

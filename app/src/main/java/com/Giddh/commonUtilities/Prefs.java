@@ -17,6 +17,7 @@ public class Prefs {
     private static final String COUNTRY = "country";
     private static final String SIZEMAIL = "mails";
     private static final String FIRSTTIME = "first_time";
+    private static final String COMPANYSIZE = "compsny_size";
 
     private static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences("mypref", Context.MODE_MULTI_PROCESS | Context.MODE_PRIVATE);
@@ -34,6 +35,7 @@ public class Prefs {
         // perform validation etc..
         getPrefs(context).edit().putString(AUTHKEY, value).commit();
     }
+
     public static int getSizemail(Context context) {
         return getPrefs(context).getInt(SIZEMAIL, 0);
     }
@@ -53,6 +55,15 @@ public class Prefs {
         getPrefs(context).edit().putString(EMAIL_ID, value).commit();
     }
 
+    public static String getCompanysize(Context context) {
+        return getPrefs(context).getString(COMPANYSIZE, "");
+    }
+
+    public static void setCompanysize(Context context, String value) {
+        // perform validation etc..
+        getPrefs(context).edit().putString(COMPANYSIZE, value).commit();
+    }
+
 
     public static String getFirsttime(Context context) {
         return getPrefs(context).getString(FIRSTTIME, "");
@@ -62,6 +73,7 @@ public class Prefs {
         // perform validation etc..
         getPrefs(context).edit().putString(FIRSTTIME, value).commit();
     }
+
     public static String getUserName(Context context) {
         return getPrefs(context).getString(USER_NAME, "");
     }
@@ -97,6 +109,7 @@ public class Prefs {
     public static String getCurrency(Context context) {
         return getPrefs(context).getString(CURRENCY, "");
     }
+
     public static void setCountry(Context context, String value) {
         getPrefs(context).edit().putString(COUNTRY, value).commit();
     }

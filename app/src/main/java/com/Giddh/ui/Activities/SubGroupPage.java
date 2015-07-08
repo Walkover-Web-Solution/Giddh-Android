@@ -10,13 +10,18 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.Giddh.R;
 import com.Giddh.adapters.AccountDetailsAdapter;
 import com.Giddh.adapters.TrialBalanceAdapter;
 import com.Giddh.commonUtilities.CommonUtility;
+import com.Giddh.commonUtilities.FontTextView;
 import com.Giddh.commonUtilities.NonScrollListView;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.commonUtilities.VariableClass;
@@ -44,19 +49,45 @@ public class SubGroupPage extends AppCompatActivity {
         Mint.initAndStartSession(ctx, CommonUtility.BUGSENSEID);
         Mint.setUserIdentifier(Prefs.getEmailId(ctx));
         groupDetails = (GroupDetails) getIntent().getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
-        actionBar = getSupportActionBar();
+      /*  actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setTitle(" " + groupDetails.getGroupName());
-        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);*/
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+        View mCustomView = mInflater.inflate(R.layout.actionbar_subgrp, null);
+        FontTextView mTitleTextView = (FontTextView) mCustomView.findViewById(R.id.title_text);
+        mTitleTextView.setText(groupDetails.getGroupName());
+        final ImageButton imageButton = (ImageButton) mCustomView
+                .findViewById(R.id.imageView1);
+        final ImageButton imagemenu = (ImageButton) mCustomView
+                .findViewById(R.id.menuimage);
+        final FrameLayout btnlayout = (FrameLayout) mCustomView
+                .findViewById(R.id.button_layout);
         Resources res = getResources();
         Bitmap image = CommonUtility.drawImage(groupDetails.getGroupName(), SubGroupPage.this);
         BitmapDrawable icon = new BitmapDrawable(res, image);
-        actionBar.setDisplayShowHomeEnabled(true);
+        imageButton.setImageDrawable(icon);
+        imagemenu.setBackgroundResource(R.drawable.company);
+        actionBar.setCustomView(mCustomView);
+        actionBar.setDisplayShowCustomEnabled(true);
+        imagemenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ctx, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                SubGroupPage.this.finish();
+            }
+        });
+     /*   actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setLogo(icon);
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar_color)));*/
         lvSubGroplist = (NonScrollListView) findViewById(R.id.list_group);
         lvAccountDetails = (NonScrollListView) findViewById(R.id.list_account);
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar_color)));
         accountsList = new ArrayList<>();
         subgroups = new ArrayList<>();
         if (groupDetails.getSubGroupDetails() != null)

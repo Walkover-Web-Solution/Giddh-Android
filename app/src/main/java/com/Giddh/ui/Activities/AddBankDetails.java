@@ -156,14 +156,13 @@ public class AddBankDetails extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (back){
+        if (back) {
             Intent i = new Intent(ctx, AskType.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             AddBankDetails.this.finish();
-        }
-        else {
+        } else {
             Intent i = new Intent(ctx, SettingsPage.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

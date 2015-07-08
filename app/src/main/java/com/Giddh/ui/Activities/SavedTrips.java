@@ -126,28 +126,36 @@ public class SavedTrips extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent home = new Intent(ctx, HomeActivity.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(home);
+                SavedTrips.this.finish();
             }
         });
         trips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent multi = new Intent(ctx, SummaryInfo.class);
+                multi.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(multi);
+                SavedTrips.this.finish();
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent home = new Intent(ctx, SettingsPage.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(home);
+                SavedTrips.this.finish();
             }
         });
         transactions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent home = new Intent(ctx, AskType.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(home);
+                SavedTrips.this.finish();
             }
         });
         btnlayout.setOnClickListener(new View.OnClickListener() {

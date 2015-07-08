@@ -12,6 +12,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -55,24 +56,14 @@ public class CommonUtility {
     public final static String BUGSENSEID_TEST = "6fd281fc";
     public static MaterialDialog dialog;
     public static int stack;
-   // public static int summary_stack=0;
-    public static ArrayList<SummaryAccount> summary_stack =new ArrayList<>(3);
+    // public static int summary_stack=0;
+    public static ArrayList<SummaryAccount> summary_stack = new ArrayList<>(3);
 
     public static boolean isNetworkAvailable(Context context) {
-        boolean bool;
-        ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        State mobile = conMan.getNetworkInfo(0).getState();
-        State wifi = conMan.getNetworkInfo(1).getState();
-        if (mobile == State.CONNECTED) {
-            bool = true;
-            return bool;
-        } else if (wifi == State.CONNECTED) {
-            bool = true;
-            return bool;
-        } else {
-            bool = false;
-            return bool;
-        }
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public static void show_PDialog(Context context
@@ -413,7 +404,7 @@ public class CommonUtility {
         int colorsarray[] = {ctx.getResources().getColor(R.color.white)};
         Bitmap image = null;
         Paint paint = new Paint();
-        paint.setTextSize(30);
+        paint.setTextSize(22);
         // Random rnd = new Random();
         //int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         paint.setColor(ctx.getResources().getColor(android.R.color.black));

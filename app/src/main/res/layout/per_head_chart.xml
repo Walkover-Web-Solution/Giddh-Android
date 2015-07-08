@@ -7,65 +7,65 @@
 
 
     <RelativeLayout
+        android:id="@+id/total_spend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/total_spend"
-        android:background="@color/white"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:background="@color/white">
 
         <TextView
+            android:id="@+id/total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="TOTAL"
-            android:id="@+id/total"
             android:textColor="#6D6D6D"
-            android:textSize="18dp"
-            android:layout_margin="5dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/total_expense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textSize="55dp"
-            android:layout_margin="10dp"
             android:layout_below="@+id/total"
-            android:text="0.0"
-            android:gravity="center_horizontal|center_vertical"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
-            android:textColor="#6D6D6D" />
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:singleLine="true"
+            android:text="0.0"
+            android:textColor="#6D6D6D"
+            android:textSize="55dp" />
 
         <LinearLayout
             android:id="@+id/per_head_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/total_expense"
-            android:weightSum="10"
             android:layout_margin="5dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:weightSum="10">
 
             <TextView
                 android:id="@+id/today"
-                android:gravity="center_horizontal"
-                android:layout_weight="5"
-                android:textSize="14sp"
-                android:textColor="@color/action_bar_color"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TODAY EXPENSE" />
+                android:layout_weight="5"
+                android:gravity="center_horizontal"
+                android:text="TODAY EXPENSE"
+                android:textColor="@color/action_bar_color"
+                android:textSize="14sp" />
 
 
             <TextView
                 android:id="@+id/perhead"
-                android:layout_weight="5"
-                android:textSize="14sp"
-                android:textColor="@android:color/holo_green_dark"
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PER HEAD" />
+                android:layout_weight="5"
+                android:gravity="center_horizontal"
+                android:text="PER HEAD"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="14sp" />
         </LinearLayout>
 
 
@@ -74,28 +74,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/per_head_text"
-            android:weightSum="10"
+            android:layout_margin="5dp"
             android:gravity="center_horizontal"
-            android:layout_margin="5dp">
+            android:weightSum="10">
 
             <TextView
                 android:id="@+id/today_expense"
-                android:gravity="center_horizontal"
-                android:layout_weight="5"
-                android:textSize="25dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0.0" />
+                android:layout_weight="5"
+                android:gravity="center_horizontal"
+                android:text="0.0"
+                android:textSize="25dp" />
 
 
             <TextView
                 android:id="@+id/expense_per_head"
-                android:layout_weight="5"
-                android:textSize="25dp"
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0.0" />
+                android:layout_weight="5"
+                android:gravity="center_horizontal"
+                android:text="0.0"
+                android:textSize="25dp" />
         </LinearLayout>
 
     </RelativeLayout>

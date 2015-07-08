@@ -22,7 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.Giddh.R;
 import com.Giddh.commonUtilities.Apis;
@@ -66,8 +65,6 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
     LinearLayout home, transactions, trip, summary;
     private static long back_pressed;
     ArrayList<Accounts> accounts, cat;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +118,7 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 Intent trip = new Intent(ctx, SelectInfo.class);
                 trip.putExtra(VariableClass.Vari.SELECTEDDATA, 4);
+                trip.putExtra("CashInAtm", false);
                 startActivity(trip);
                 SettingsPage.this.finish();
             }

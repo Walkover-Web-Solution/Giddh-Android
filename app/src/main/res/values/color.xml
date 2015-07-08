@@ -4,7 +4,8 @@
     <color name="dialogbox_bg">#1F1F1F</color>
     <color name="dialogbox_optional">#474747</color>
     <color name="light_black">#4D000000</color>
-    <color name="action_bar_color">#db650b</color>
+    <color name="action_bar_color">#E6673D</color>
+    <color name="head_list">#857A73</color>
     <color name="fb_login_color">#5D79B4</color>
     <color name="blue_group">#4490ed</color>
     <color name="black_name">#272422</color>
@@ -17,7 +18,7 @@
     <color name="red">#f2716e</color>
     <color name="transparent">#00000000</color>
     <color name="orange_default_color">#e6673d</color>
-    <color name="orange_footer_head">#CD7051</color>
+    <color name="orange_footer_head">#E6673D</color>
     <color name="black_head">#717171</color>
     <color name="divider_color">#eaeaea</color>
     <color name="white_arc">#faf0e6</color>
@@ -29,7 +30,7 @@
     <color name="black_semi_transparent">#B2000000</color>
     <color name="background">#e5e5e5</color>
     <color name="half_black">#808080</color>
-
+    <color name="light_bg">#eeeeee</color>
     <color name="white">#fafafa</color>
     <color name="white_pressed">#f1f1f1</color>
     <color name="pink">#e91e63</color>

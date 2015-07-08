@@ -1,18 +1,16 @@
 package com.Giddh.ui.Activities;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.Editable;
@@ -32,7 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.Giddh.R;
-import com.Giddh.adapters.AccountDetailsAdapter;
 import com.Giddh.adapters.TrialBalanceAdapter;
 import com.Giddh.commonUtilities.Apis;
 import com.Giddh.commonUtilities.CommonUtility;
@@ -50,15 +47,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class TrailBalancePage extends AppCompatActivity {
-    ActionBar actionBar;
+    android.support.v7.app.ActionBar actionBar;
     Company companydto;
     ListView lnGroplist;
     ArrayList<GroupDetails> mainGroupNames;
@@ -83,16 +78,14 @@ public class TrailBalancePage extends AppCompatActivity {
         Mint.setUserIdentifier(Prefs.getEmailId(ctx));
         companydto = (Company) getIntent().getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setTitle(" " + companydto.getCompanyName());
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        Resources res = getResources();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(" " + CommonUtility.getfonttext(companydto.getCompanyName(), TrailBalancePage.this));
+        actionBar.setDisplayShowTitleEnabled(false);
         Bitmap image = CommonUtility.drawImage(companydto.getCompanyName(), TrailBalancePage.this);
-        BitmapDrawable icon = new BitmapDrawable(res, image);
+        BitmapDrawable icon = new BitmapDrawable(getResources(), image);
         actionBar.setIcon(icon);
         lnGroplist = (ListView) findViewById(R.id.list_group);
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar_color)));
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));
         error_FontTextView = (TextView) findViewById(R.id.error_text);
         error_layout = (RelativeLayout) findViewById(R.id.error_layout);
         edTodate = (EditText) findViewById(R.id.etxt_todate);
@@ -101,6 +94,9 @@ public class TrailBalancePage extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -1);
         currentDateandTime = dateFormatter.format(cal.getTime());
+        edTodate.setText(dateFormatter.format(new java.util.Date()));
+        if (CommonUtility.isNetworkAvailable(ctx))
+            new getTrialBalance().execute();
         setDateTimeField();
         edTodate.addTextChangedListener(new TextWatcher() {
             @Override
@@ -193,7 +189,6 @@ public class TrailBalancePage extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-
                 edTodate.setText(dateFormatter.format(newDate.getTime()));
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -209,15 +204,16 @@ public class TrailBalancePage extends AppCompatActivity {
             dialog.dismiss();
             dialog.cancel();
             super.onPostExecute(result);
-            if (mainGroupNames.size() > 0) {
-                lnGroplist.setVisibility(View.VISIBLE);
-                adapter = new TrialBalanceAdapter(mainGroupNames, ctx, false);
-                lnGroplist.setAdapter(adapter);
-                adapter.notifyDataSetInvalidated();
-                adapter.notifyDataSetChanged();
-            } else {
-                lnGroplist.setVisibility(View.GONE);
-            }
+            if (mainGroupNames != null)
+                if (mainGroupNames.size() > 0) {
+                    lnGroplist.setVisibility(View.VISIBLE);
+                    adapter = new TrialBalanceAdapter(mainGroupNames, ctx, false);
+                    lnGroplist.setAdapter(adapter);
+                    adapter.notifyDataSetInvalidated();
+                    adapter.notifyDataSetChanged();
+                } else {
+                    lnGroplist.setVisibility(View.GONE);
+                }
         }
 
         @Override

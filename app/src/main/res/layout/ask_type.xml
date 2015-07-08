@@ -29,6 +29,7 @@
                 android:visibility="gone">
 
                 <TextView
+                    android:id="@+id/tvreceiving"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -47,6 +48,7 @@
                 android:visibility="gone">
 
                 <TextView
+                    android:id="@+id/tvgiving"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -185,12 +187,29 @@
             android:textColorHint="#727272"
             android:textSize="20sp" />
 
+        <RelativeLayout
+            android:id="@+id/receipt_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/amount"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/btn_receipt"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/orange_footer_head"
+                android:padding="5dp" />
+        </RelativeLayout>
 
         <GridView
             android:id="@+id/flags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/amount"
+            android:layout_below="@id/receipt_layout"
             android:cacheColorHint="#00000000"
             android:horizontalSpacing="1dp"
             android:numColumns="3"

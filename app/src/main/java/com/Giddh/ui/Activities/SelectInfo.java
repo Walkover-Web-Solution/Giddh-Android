@@ -23,6 +23,7 @@ import com.Giddh.dtos.Accounts;
 import com.Giddh.dtos.TripInfo;
 import com.Giddh.util.UserService;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.splunk.mint.Mint;
 
 import org.json.JSONArray;
@@ -44,6 +45,7 @@ public class SelectInfo extends AppCompatActivity {
     Accounts acval;
     TripInfo tripInfo;
     TextView emp_view;
+    Boolean cashInAtm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class SelectInfo extends AppCompatActivity {
         cat = new ArrayList<>();
         tripAsso = new ArrayList<>();
         paramtype = getIntent().getExtras().getInt(VariableClass.Vari.SELECTEDDATA);
+        cashInAtm = getIntent().getExtras().getBoolean("CashInAtm");
         emp_view = (TextView) findViewById(R.id.emp_view);
         info.setEmptyView(emp_view);
 
@@ -86,6 +89,12 @@ public class SelectInfo extends AppCompatActivity {
                 flagTypeAdapter = new FlagTypAdapter(getfilteredlist(), ctx, SelectInfo.this, false);
                 info.setAdapter(flagTypeAdapter);
                 break;
+            case 5:
+                setgridAdapter("0");
+                break;
+            case 6:
+                setgridAdapter("1");
+                break;
         }
         info.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -96,6 +105,47 @@ public class SelectInfo extends AppCompatActivity {
                 } else if (paramtype == 2) {
                     tripInfo = (TripInfo) parent.getItemAtPosition(position);
                     SelectInfo.this.finish();
+
+                } else if (paramtype == 5 || paramtype == 6) {
+                    acval = (Accounts) parent.getItemAtPosition(position);
+                    if (acval.getAccountName().equalsIgnoreCase("ATM withdraw")) {
+                        if (cashInAtm) {
+                            acval = userService.getaccountnameorId("Cash");
+                            SelectInfo.this.finish();
+                        } else {
+                            if (userService.getcountacc("3", "Cash").size() > 0) {
+                                ArrayList<Accounts> banks = new ArrayList<>();
+                                banks = userService.getcountacc("3", "Cash");
+                                String banksarr[] = new String[banks.size()];
+                                if (banks.size() > 0)
+                                    for (int i = 0; i < banks.size(); i++) {
+                                        banksarr[i] = banks.get(i).getAccountName();
+                                    }
+                                new MaterialDialog.Builder(ctx)
+                                        .title("Select Bank")
+                                        .items(banksarr)
+                                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                            @Override
+                                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                                Log.e("bank_selected", "" + text);
+                                                if (text != null && !text.equals("")) {
+                                                    acval = userService.getaccountnameorId(text.toString());
+                                                    SelectInfo.this.finish();
+                                                }
+                                                return true;
+                                            }
+                                        })
+                                        .positiveText("Ok")
+                                        .show();
+                            } else {
+                                CommonUtility.showCustomAlertForContactsError(ctx, "No bank account found");
+                            }
+                        }
+
+                    } else {
+                        acval = (Accounts) parent.getItemAtPosition(position);
+                        SelectInfo.this.finish();
+                    }
                 }
             }
         });
@@ -146,6 +196,11 @@ public class SelectInfo extends AppCompatActivity {
 
     void setgridAdapter(String id) {
         cat = userService.getallAccounts(id, true, false);
+        for (int i = 0; i < cat.size(); i++) {
+            if (cat.get(i).getAccountName().equals("Other")) {
+                cat.remove(i);
+            }
+        }
         flagTypeAdapter = new FlagTypAdapter(cat, ctx, SelectInfo.this, false);
         info.setAdapter(flagTypeAdapter);
     }
@@ -163,7 +218,7 @@ public class SelectInfo extends AppCompatActivity {
     @Override
     public void finish() {
         Intent data = new Intent();
-        if (paramtype == 0 || paramtype == 1 || paramtype == 3) {
+        if (paramtype == 0 || paramtype == 1 || paramtype == 3 || paramtype == 5 || paramtype == 6) {
             data.putExtra(VariableClass.Vari.SELECTEDDATA, acval);
         } else {
             data.putExtra(VariableClass.Vari.SELECTEDDATA, tripInfo);
@@ -221,4 +276,5 @@ public class SelectInfo extends AppCompatActivity {
             return null;
         }
     }
+
 }

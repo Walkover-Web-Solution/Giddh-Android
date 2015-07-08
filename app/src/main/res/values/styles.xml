@@ -14,6 +14,7 @@
 
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="PPBaseTheme" parent="AppBaseTheme"></style>
     <style name="MyTheme" parent="Theme.AppCompat.Dialog">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
         <item name="android:windowBackground">@drawable/pd_inner_background</item>
@@ -23,6 +24,7 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/textsize_em</item>
     </style>
+
     <style name="CustomAlertDialogStyle">
         <item name="android:bottomBright">@android:color/transparent</item>
         <item name="android:bottomDark">@android:color/transparent</item>
@@ -35,10 +37,12 @@
         <item name="android:topBright">@android:color/transparent</item>
         <item name="android:topDark">@android:color/transparent</item>
     </style>
+
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="next_button_style">
         <item name="android:background">@drawable/next</item>
         <item name="android:textColor">@color/white</item>
@@ -50,11 +54,26 @@
     </style>
 
 
-
-
     <style name="TripActionbar" parent="Theme.AppCompat.Light">
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/orange_footer_head</item>
+    </style>
+    <style name="MyAppTheme" parent="Theme.AppCompat.Light">
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="drawerArrowStyle">@style/my_drawer_arrow</item>
+    </style>
+    <style name="my_drawer_arrow" parent="Widget.AppCompat.ActionButton.Overflow" >
+        <item name="color">@color/white</item>
+    </style>
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="titleTextStyle">@style/TitleTextStyle</item>
+        <item name="displayOptions">showHome|showTitle</item>
+
+
+    </style>
+
+    <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
 </resources>

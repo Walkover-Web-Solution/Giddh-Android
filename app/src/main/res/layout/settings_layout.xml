@@ -41,8 +41,8 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="center_vertical|left"
                         android:text="Profile Name"
-                        android:textColor="#0B8B8A"
-                        android:textSize="25dp" />
+                        android:textColor="#341E20"
+                        android:textSize="20dp" />
 
                     <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/subprofilename"
@@ -78,8 +78,8 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="center_vertical|left"
                         android:text="Bank Accounts"
-                        android:textColor="#0B8B8A"
-                        android:textSize="25dp" />
+                        android:textColor="#341E20"
+                        android:textSize="20dp" />
 
                     <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/subaccounts"
@@ -115,8 +115,8 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="center_vertical|left"
                         android:text="Associated trips"
-                        android:textColor="#0B8B8A"
-                        android:textSize="25dp" />
+                        android:textColor="#341E20"
+                        android:textSize="20dp" />
 
                     <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/subtrips"
@@ -152,8 +152,8 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="center_vertical|left"
                         android:text="Credit Card"
-                        android:textColor="#0B8B8A"
-                        android:textSize="25dp" />
+                        android:textColor="#341E20"
+                        android:textSize="20dp" />
 
                     <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/subcard"
@@ -190,8 +190,8 @@
                         android:layout_marginRight="10dp"
                         android:gravity="center_vertical|left"
                         android:text="Sync"
-                        android:textColor="#0B8B8A"
-                        android:textSize="25dp" />
+                        android:textColor="#341E20"
+                        android:textSize="20dp" />
 
                     <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/subSync"
@@ -269,8 +269,8 @@
                         android:layout_marginRight="10dp"
                         android:gravity="center_vertical|left"
                         android:text="Accounts"
-                        android:textColor="#0B8B8A"
-                        android:textSize="25dp" />
+                        android:textColor="#341E20"
+                        android:textSize="20dp" />
 
                     <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/subaccount"
@@ -301,8 +301,8 @@
                         android:layout_marginRight="10dp"
                         android:gravity="center_vertical|left"
                         android:text="Log out"
-                        android:textColor="#0B8B8A"
-                        android:textSize="25dp" />
+                        android:textColor="#341E20"
+                        android:textSize="20dp" />
 
                     <com.Giddh.commonUtilities.FontTextView
                         android:id="@+id/sublogout"

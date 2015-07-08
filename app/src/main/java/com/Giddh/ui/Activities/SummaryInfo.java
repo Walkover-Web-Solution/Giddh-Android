@@ -147,7 +147,6 @@ public class SummaryInfo extends AppCompatActivity {
         tripsInDb = new ArrayList<>();
         actionBar.setTitle(CommonUtility.getfonttext("Summary", SummaryInfo.this));
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));
-
         lvaccAssets = (NonScrollListView) findViewById(R.id.list_assets);
         tvincomeVal = (FontTextView) findViewById(R.id.income_amount);
         tvExpenseVal = (FontTextView) findViewById(R.id.expense_amount);
@@ -356,17 +355,13 @@ public class SummaryInfo extends AppCompatActivity {
                 sumCredit = tmpCreditBalance;
                 Log.e("tmpDebitBalance", "Account Name = " + tmpDebitAccountName + ", balance = " + tmpDebitBalance);
                 Log.e("tmpCreditBalance", "Account Name = " + tmpCreditAccountName + ", balance = " + tmpCreditBalance);
-                double v = (sumDebit - sumCredit) + acconts.get(j).getOpeningBalance();
-                summaryAccount.setClosingBal((Double) v);
+                double v = (sumDebit - sumCredit) - acconts.get(j).getOpeningBalance();
+                summaryAccount.setClosingBal(v);
                 closingBalGrp = closingBalGrp + v;
                 summaryAccounts.add(summaryAccount);
             }
             if (summaryGroup.getGroupName().equals("Assets")) {
                 tvAccVal.setText(decimalFormat.format(closingBalGrp));
-               /* if (closingBalGrp < 0)
-                    tvAccVal.setText(String.valueOf(closingBalGrp * -1));
-                else
-                    tvAccVal.setText(String.valueOf(closingBalGrp));*/
             } else if (summaryGroup.getGroupName().equals("Liability")) {
                 tvamontLiabVal.setText(decimalFormat.format(closingBalGrp * -1));
                /* if (closingBalGrp < 0)
@@ -392,30 +387,17 @@ public class SummaryInfo extends AppCompatActivity {
                 Math.max(x, mRootLayout.getWidth() - x),
                 Math.max(y, mRootLayout.getHeight() - y));
         if (v.isSelected()) {
-            //  disableChilds();
+
             hideMenu(x, y, radiusFromFabToRoot, radiusOfFab);
             // revealButton.setImageResource(0);
         } else {
-            //enableChilds();
+
             showMenu(x, y, radiusOfFab, radiusFromFabToRoot);
             //  revealButton.setImageResource(R.drawable.close);
         }
         v.setSelected(!v.isSelected());
     }
 
- /*   void disableChilds() {
-        for (int i = 0; i < mSummary_root.getChildCount(); i++) {
-            View child = mSummary_root.getChildAt(i);
-            child.setClickable(false);
-        }
-    }
-
-    void enableChilds() {
-        for (int i = 0; i < mSummary_root.getChildCount(); i++) {
-            View child = mSummary_root.getChildAt(i);
-            child.setClickable(true);
-        }
-    }*/
 
     private void showMenu(int cx, int cy, float startRadius, float endRadius) {
         mMenuLayout.setVisibility(View.VISIBLE);
@@ -555,18 +537,12 @@ public class SummaryInfo extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            CommonUtility.dialog.dismiss();
-            if (iserr) {
-                //showErrorMessage(true, response);
-            } else {
-            }
             super.onPostExecute(result);
         }
 
         @Override
         protected void onPreExecute() {
             // showErrorMessage(false, "");
-            CommonUtility.show_PDialog(ctx);
             super.onPreExecute();
         }
 
@@ -576,7 +552,6 @@ public class SummaryInfo extends AppCompatActivity {
             if (!response.equals("")) {
                 JSONObject joparent = null;
                 JSONObject jochild = null;
-                //JSONArray japarent = null;
                 try {
                     joparent = new JSONObject(response);
                     if (joparent.getString(VariableClass.ResponseVariables.RESPONSE).equals(Apis.ErrorResponse)) {

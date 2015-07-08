@@ -1,24 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:gravity="center"
-    android:orientation="vertical"
     android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/grid_image"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:gravity="center"></ImageView>
-
-    <TextView
-        android:id="@+id/grid_text"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:singleLine="true"
-        android:textColor="#727272"></TextView>>
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/grid_image"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:src="@drawable/cash_large"></ImageView>
+
+            <TextView
+                android:id="@+id/grid_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/grid_image"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="#727272"></TextView>>
+            <ImageView
+                android:id="@+id/tick_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tick"
+                android:visibility="gone"
+                android:layout_marginLeft="12dp"
+                android:layout_alignBottom="@+id/grid_image"
+                android:layout_toRightOf="@+id/grid_image"
+                android:layout_toEndOf="@+id/grid_image"></ImageView>
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+</RelativeLayout>

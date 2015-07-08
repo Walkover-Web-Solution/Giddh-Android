@@ -69,7 +69,7 @@ public class SavedEmailsAdapter extends BaseAdapter {
         }
 
         if (ldto.getAmount() != null && !ldto.getAmount().equals(""))
-            viewholder.tvamount.setText(decimalFormat.format(ldto.getAmount()) + " " + Prefs.getCurrency(ctx));
+            viewholder.tvamount.setText((decimalFormat.format(Double.valueOf(ldto.getAmount()))) + " " + Prefs.getCurrency(ctx));
 
         return paramView;
     }

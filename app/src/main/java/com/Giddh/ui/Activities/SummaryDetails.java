@@ -24,6 +24,7 @@ import com.Giddh.R;
 import com.Giddh.adapters.SummaryDetailsAdapter;
 import com.Giddh.commonUtilities.Apis;
 import com.Giddh.commonUtilities.CommonUtility;
+import com.Giddh.commonUtilities.FontTextView;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.commonUtilities.VariableClass;
 import com.Giddh.dtos.SummaryAccount;
@@ -37,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class SummaryDetails extends AppCompatActivity {
@@ -48,14 +50,17 @@ public class SummaryDetails extends AppCompatActivity {
     TextView emp_view;
     ArrayList<SummaryEntry> entries;
     SummaryDetailsAdapter summaryDetailsAdapter;
-    View addnewTransaction;
-    TextView opening, closing;
+    FontTextView opening, closing;
+    DecimalFormat decimalFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.summarydetails);
         ctx = SummaryDetails.this;
+        decimalFormat = new DecimalFormat("#.00");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
         Mint.initAndStartSession(ctx, CommonUtility.BUGSENSEID);
         Mint.setUserIdentifier(Prefs.getEmailId(ctx));
         userService = UserService.getUserServiceInstance(ctx);
@@ -65,7 +70,9 @@ public class SummaryDetails extends AppCompatActivity {
         }
         listExpandable = (ExpandableListView) findViewById(R.id.details_list);
         emp_view = (TextView) findViewById(R.id.emp_view);
-        addnewTransaction = findViewById(R.id.add_transaction);
+
+        opening = (FontTextView) findViewById(R.id.opening_bal);
+        closing = (FontTextView) findViewById(R.id.closing_balance);
         listExpandable.setEmptyView(emp_view);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -75,8 +82,7 @@ public class SummaryDetails extends AppCompatActivity {
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
         final ImageButton addtrans = (ImageButton) mCustomView
                 .findViewById(R.id.addtransactions);
-        opening = (TextView) mCustomView.findViewById(R.id.op_balance);
-        closing = (TextView) mCustomView.findViewById(R.id.cl_balance);
+
         if (summaryAccount.getGroup() != null) {
             opening.setVisibility(View.GONE);
             closing.setVisibility(View.GONE);
@@ -88,14 +94,23 @@ public class SummaryDetails extends AppCompatActivity {
         Double closingb = Double.valueOf(openingb) - (val1 - val2);
         if (closingb < 0)
             closingb = closingb * -1;
-        opening.setText("Opening =" + openingb);
-        closing.setText("Closing  =" + closingb);
+
         //imageButton.setBackgroundResource(R.drawable.small_summary);
         addtrans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent trans = new Intent(ctx, AskType.class);
-                startActivity(trans);
+                if (summaryAccount.getGroupName() != null) {
+                    if (summaryAccount.getGroupName().equals("Assets") || summaryAccount.getGroupName().equals("Liability")) {
+                        Intent multi = new Intent(ctx, AskType.class);
+                        multi.putExtra(VariableClass.Vari.SELECTEDDATA, summaryAccount);
+                        startActivity(multi);
+                    }
+                } else {
+                    Intent multi = new Intent(ctx, AddEntryByLedger.class);
+                    multi.putExtra(VariableClass.Vari.SELECTEDDATA, summaryAccount);
+                    startActivity(multi);
+                }
+
             }
         });
         actionBar.setCustomView(mCustomView);
@@ -111,13 +126,7 @@ public class SummaryDetails extends AppCompatActivity {
         for (int i = 0; i < entries.size(); i++) {
             listExpandable.expandGroup(i);
         }
-        addnewTransaction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent multi = new Intent(ctx, AskType.class);
-                startActivity(multi);
-            }
-        });
+
         listExpandable.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
@@ -194,6 +203,9 @@ public class SummaryDetails extends AppCompatActivity {
                 return true;
             }
         });
+
+        opening.setText("Opening Balance =" + String.valueOf((openingb)));
+        closing.setText("Closing Balance =" + String.valueOf((closingb)));
     }
 
     public int GetPixelFromDips(float pixels) {
@@ -283,7 +295,7 @@ public class SummaryDetails extends AppCompatActivity {
                 CommonUtility.summary_stack.remove(CommonUtility.summary_stack.size() - 1);
                 startActivity(intent);
                 SummaryDetails.this.finish();
-            }catch (Exception e){
+            } catch (Exception e) {
                 Intent intent = new Intent(getBaseContext(), SummaryInfo.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

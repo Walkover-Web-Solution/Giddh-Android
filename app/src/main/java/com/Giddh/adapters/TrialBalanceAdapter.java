@@ -13,9 +13,7 @@ import com.Giddh.dtos.GroupDetails;
 
 import java.util.ArrayList;
 
-/**
- * Created by walkover on 27/2/15.
- */
+
 public class TrialBalanceAdapter extends BaseAdapter {
     Context ctx;
     ArrayList<GroupDetails> list;
@@ -57,7 +55,10 @@ public class TrialBalanceAdapter extends BaseAdapter {
                 viewholder.tvCompanyNames.setText(paramInt + 1 + ". " + ldto.getGroupName());
             else
                 viewholder.tvCompanyNames.setText(ldto.getGroupName());
-            viewholder.tvclosingbalance.setText(ldto.getClosingBalance() + " " + Prefs.getCurrency(ctx));
+            if (Double.valueOf(ldto.getClosingBalance()) < 0)
+                viewholder.tvclosingbalance.setText(Double.valueOf(ldto.getClosingBalance()) * -1 + " " + Prefs.getCurrency(ctx));
+            else
+                viewholder.tvclosingbalance.setText(ldto.getClosingBalance() + " " + Prefs.getCurrency(ctx));
         } else {
             viewholder.tvCompanyNames.setText("No Data Available");
             viewholder.tvclosingbalance.setText("");

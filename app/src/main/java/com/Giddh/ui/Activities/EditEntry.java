@@ -219,12 +219,15 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
                 case R.id.trip:
                     Intent trip = new Intent(ctx, SelectInfo.class);
                     trip.putExtra(VariableClass.Vari.SELECTEDDATA, 2);
+                    trip.putExtra("CashInAtm", false);
                     startActivityForResult(trip, 103);
                     break;
                 case R.id.for_val:
                     Intent rec = new Intent(ctx, SelectInfo.class);
+                    rec.putExtra("CashInAtm", false);
                     if (entryInfo.getTransactionType().equals("0")) {
                         rec.putExtra(VariableClass.Vari.SELECTEDDATA, 0);
+
                     } else {
                         rec.putExtra(VariableClass.Vari.SELECTEDDATA, 1);
                     }
@@ -233,6 +236,7 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
                 case R.id.via:
                     Intent via = new Intent(ctx, SelectInfo.class);
                     via.putExtra(VariableClass.Vari.SELECTEDDATA, 3);
+                    via.putExtra("CashInAtm", false);
                     startActivityForResult(via, 102);
                     break;
             }

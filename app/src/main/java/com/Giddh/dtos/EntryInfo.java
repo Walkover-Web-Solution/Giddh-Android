@@ -2,9 +2,7 @@ package com.Giddh.dtos;
 
 import java.io.Serializable;
 
-/**
- * Created by walkover on 24/3/15.
- */
+
 public class EntryInfo implements Serializable {
     public String id;
     public String date;
