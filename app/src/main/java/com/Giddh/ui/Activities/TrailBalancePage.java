@@ -28,7 +28,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.Giddh.R;
 import com.Giddh.adapters.TrialBalanceAdapter;
 import com.Giddh.commonUtilities.Apis;
@@ -42,11 +41,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.splunk.mint.Mint;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,9 +75,9 @@ public class TrailBalancePage extends AppCompatActivity {
         Mint.setUserIdentifier(Prefs.getEmailId(ctx));
         companydto = (Company) getIntent().getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(" " + CommonUtility.getfonttext(companydto.getCompanyName(), TrailBalancePage.this));
-        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setTitle(" " + CommonUtility.getfonttext(companydto.getCompanyName(),TrailBalancePage.this));
+        actionBar.setDisplayShowTitleEnabled(true);
         Bitmap image = CommonUtility.drawImage(companydto.getCompanyName(), TrailBalancePage.this);
         BitmapDrawable icon = new BitmapDrawable(getResources(), image);
         actionBar.setIcon(icon);

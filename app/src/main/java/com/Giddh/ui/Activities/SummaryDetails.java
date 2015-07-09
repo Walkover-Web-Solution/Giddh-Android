@@ -86,6 +86,7 @@ public class SummaryDetails extends AppCompatActivity {
         if (summaryAccount.getGroup() != null) {
             opening.setVisibility(View.GONE);
             closing.setVisibility(View.GONE);
+            addtrans.setVisibility(View.GONE);
         }
         mTitleTextView.setText(CommonUtility.getfonttext(summaryAccount.getAccountName(), SummaryDetails.this));
         String openingb = userService.getopening_balance(summaryAccount.getAccountName());
