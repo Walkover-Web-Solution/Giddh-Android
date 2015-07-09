@@ -70,7 +70,6 @@ public class SummaryDetails extends AppCompatActivity {
         }
         listExpandable = (ExpandableListView) findViewById(R.id.details_list);
         emp_view = (TextView) findViewById(R.id.emp_view);
-
         opening = (FontTextView) findViewById(R.id.opening_bal);
         closing = (FontTextView) findViewById(R.id.closing_balance);
         listExpandable.setEmptyView(emp_view);
@@ -82,7 +81,6 @@ public class SummaryDetails extends AppCompatActivity {
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
         final ImageButton addtrans = (ImageButton) mCustomView
                 .findViewById(R.id.addtransactions);
-
         if (summaryAccount.getGroup() != null) {
             opening.setVisibility(View.GONE);
             closing.setVisibility(View.GONE);
@@ -127,7 +125,6 @@ public class SummaryDetails extends AppCompatActivity {
         for (int i = 0; i < entries.size(); i++) {
             listExpandable.expandGroup(i);
         }
-
         listExpandable.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {

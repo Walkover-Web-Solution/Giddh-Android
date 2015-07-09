@@ -61,8 +61,7 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
                 entryInfo.setTransactionType("1");
                 entryInfo.setCreditAccount(summaryEntry.getAccountId());
             }
-        }
-        else {
+        } else {
             entryInfo.setTransactionType(summaryEntry.getTransactionType());
             entryInfo.setDebitAccount(summaryEntry.getAccountId());
         }
@@ -111,7 +110,11 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
                         userService.addTripentrydata(entryInfo);
                     }
                     userService.addentrydata(entryInfo);
-                    CommonUtility.syncwithServer(ctx);
+
+                    if (CommonUtility.isNetworkAvailable(ctx))
+                        CommonUtility.syncwithServer(ctx);
+                    Intent i = new Intent(ctx, SummaryInfo.class);
+                    startActivity(i);
                 } else {
                     CommonUtility.showCustomAlertForContactsError(ctx, "Some fields are missing");
                 }

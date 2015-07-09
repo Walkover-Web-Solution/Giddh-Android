@@ -227,7 +227,6 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
                     rec.putExtra("CashInAtm", false);
                     if (entryInfo.getTransactionType().equals("0")) {
                         rec.putExtra(VariableClass.Vari.SELECTEDDATA, 0);
-
                     } else {
                         rec.putExtra(VariableClass.Vari.SELECTEDDATA, 1);
                     }
@@ -251,8 +250,15 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
             switch (requestCode) {
                 case 101:
                     debcre = (Accounts) data.getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
-                    if (debcre != null)
+                    if (debcre != null) {
                         edfor.setText(debcre.getAccountName());
+                        if (debcre.getGroupId().equals("3")) {
+                            edvia.setText("Cash");
+                            viaacc = userService.getaccountnameorId("Cash");
+                            edvia.setEnabled(false);
+                        }
+                        else edvia.setEnabled(true);
+                    }
                     edfor.requestFocus();
                     break;
                 case 102:

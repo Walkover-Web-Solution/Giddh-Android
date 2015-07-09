@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
                         } else {
                             Intent intent = new Intent(ctx, AskType.class);
                             company = (Company) parent.getItemAtPosition(position);
-                            intent.putExtra(VariableClass.Vari.SELECTEDDATA, company);
+                          //  intent.putExtra(VariableClass.Vari.SELECTEDDATA, company);
                             startActivity(intent);
                         }
                     }

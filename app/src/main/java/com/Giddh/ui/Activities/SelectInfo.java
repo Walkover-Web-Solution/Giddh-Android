@@ -101,7 +101,37 @@ public class SelectInfo extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (paramtype == 0 || paramtype == 1 || paramtype == 3) {
                     acval = (Accounts) parent.getItemAtPosition(position);
-                    SelectInfo.this.finish();
+                    if (acval.getAccountName().equalsIgnoreCase("ATM withdraw") && paramtype == 0) {
+                        if (userService.getcountacc("3", "Cash").size() > 0) {
+                            ArrayList<Accounts> banks = new ArrayList<>();
+                            banks = userService.getcountacc("3", "Cash");
+                            String banksarr[] = new String[banks.size()];
+                            if (banks.size() > 0)
+                                for (int i = 0; i < banks.size(); i++) {
+                                    banksarr[i] = banks.get(i).getAccountName();
+                                }
+                            new MaterialDialog.Builder(ctx)
+                                    .title("Select Bank")
+                                    .items(banksarr)
+                                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                        @Override
+                                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                            Log.e("bank_selected", "" + text);
+                                            if (text != null && !text.equals("")) {
+                                                acval = userService.getaccountnameorId(text.toString());
+                                                SelectInfo.this.finish();
+                                            }
+                                            return true;
+                                        }
+                                    })
+                                    .positiveText("Ok")
+                                    .show();
+                        } else {
+                            CommonUtility.showCustomAlertForContactsError(ctx, "No bank account found");
+                        }
+
+                    } else
+                        SelectInfo.this.finish();
                 } else if (paramtype == 2) {
                     tripInfo = (TripInfo) parent.getItemAtPosition(position);
                     SelectInfo.this.finish();

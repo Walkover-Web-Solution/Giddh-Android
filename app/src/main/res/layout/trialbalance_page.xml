@@ -32,7 +32,6 @@
 
     </LinearLayout>
 
-
     <ListView
         android:id="@+id/list_group"
         android:layout_width="match_parent"
@@ -40,6 +39,5 @@
         android:layout_below="@+id/date_head"
         android:clickable="false"
         android:focusableInTouchMode="false"></ListView>
-
 
 </RelativeLayout>

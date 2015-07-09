@@ -9,7 +9,6 @@
         android:id="@+id/group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CAPITAL ACCOUNT"
         android:textSize="20sp"
         android:textColor="@color/black_name" />
 
@@ -18,9 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/group_name"
         android:id="@+id/closing_balance"
-        android:text="18255.31"
         android:textSize="17sp"
-        android:gravity="right"
+        android:gravity="left"
         android:textColor="@color/brown_balance" />
 
 

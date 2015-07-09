@@ -20,7 +20,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -44,6 +43,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.splunk.mint.Mint;
 
 import org.json.JSONArray;
@@ -68,7 +68,7 @@ public class AskType extends Activity {
     TripInfo tripInfo;
     Animation slide_down, slide_up, slide_back_up, slide_back_down;
     GridView gvType_tags;
-    EditText enteredAmount;
+    MaterialEditText enteredAmount;
     UserService userService;
     FlagTypAdapter flagTypeAdapter;
     private DatePickerDialog pickdate;
@@ -108,7 +108,7 @@ public class AskType extends Activity {
         selectDate = (TextView) findViewById(R.id.select_date);
         selectDate.setPaintFlags(selectDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         gvType_tags = (GridView) findViewById(R.id.flags);
-        enteredAmount = (EditText) findViewById(R.id.amount);
+        enteredAmount = (MaterialEditText) findViewById(R.id.amount);
         currency = (TextView) findViewById(R.id.sign);
         mUploadReceipt = (ImageView) findViewById(R.id.btn_receipt);
         currency.setText(Prefs.getCurrency(context));
