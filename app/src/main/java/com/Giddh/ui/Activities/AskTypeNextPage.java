@@ -27,6 +27,7 @@ import com.Giddh.dtos.EntryInfo;
 import com.Giddh.dtos.TripInfo;
 import com.Giddh.util.UserService;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.splunk.mint.Mint;
 
 import org.json.JSONArray;
@@ -38,7 +39,7 @@ import java.util.concurrent.ExecutionException;
 
 public class AskTypeNextPage extends Activity {
     GridView grid_medium, tripsAssociated;
-    EditText edDescription;
+    MaterialEditText edDescription;
     Context ctx;
     UserService userService;
     ArrayList<Accounts> fromMedium;
@@ -63,7 +64,7 @@ public class AskTypeNextPage extends Activity {
         entryInfo = (EntryInfo) getIntent().getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
         grid_medium = (GridView) findViewById(R.id.medium_trans);
         tripsAssociated = (GridView) findViewById(R.id.trips_saved);
-        edDescription = (EditText) findViewById(R.id.description);
+        edDescription = (MaterialEditText) findViewById(R.id.description);
         ibSave = (ImageButton) findViewById(R.id.save);
         ibCancel = (ImageButton) findViewById(R.id.cancel);
         userService = UserService.getUserServiceInstance(ctx);

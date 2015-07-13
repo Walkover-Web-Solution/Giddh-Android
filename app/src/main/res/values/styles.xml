@@ -57,13 +57,13 @@
     <style name="TripActionbar" parent="Theme.AppCompat.Light">
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/orange_footer_head</item>
-        <item name="android:navigationBarColor">@color/orange_footer_head</item>
+
         <item name="android:colorPrimaryDark">@color/primarydark</item>
     </style>
     <style name="MyAppTheme" parent="Theme.AppCompat.Light">
         <item name="actionBarStyle">@style/MyActionBar</item>
         <item name="drawerArrowStyle">@style/my_drawer_arrow</item>
-        <item name="android:navigationBarColor">@color/orange_footer_head</item>
+
         <item name="android:colorPrimaryDark">@color/primarydark</item>
     </style>
     <style name="my_drawer_arrow" parent="Widget.AppCompat.ActionButton.Overflow" >

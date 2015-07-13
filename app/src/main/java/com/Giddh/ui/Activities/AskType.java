@@ -236,7 +236,6 @@ public class AskType extends Activity {
                 if (parcelableUris == null) {
                     return;
                 }
-
                 // Java doesn't allow array casting, this is a little hack
                 Uri[] uris = new Uri[parcelableUris.length];
                 System.arraycopy(parcelableUris, 0, uris, 0, parcelableUris.length);
@@ -398,7 +397,6 @@ public class AskType extends Activity {
     }
 
     private void showMedia() {
-
         Iterator<Uri> iterator = mMedia.iterator();
         ImageInternalFetcher imageFetcher = new ImageInternalFetcher(this, 500);
         while (iterator.hasNext()) {
@@ -417,9 +415,7 @@ public class AskType extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             //imageFetcher.loadImage(uri, mUploadReceipt);
-
         }
     }
 

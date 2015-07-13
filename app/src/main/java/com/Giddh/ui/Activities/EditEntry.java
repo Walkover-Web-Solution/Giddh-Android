@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -102,8 +101,11 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
         if (entryInfo.getDescription() != null) {
             eddesc.setText(entryInfo.getDescription());
         }
-        if (entryInfo.getTripId() != null && !entryInfo.getTripId().equals("") && !entryInfo.getTripId().equals("0"))
+        if (entryInfo.getTripId() != null && !entryInfo.getTripId().equals("") && !entryInfo.getTripId().equals("0")) {
             edtrip.setText(userService.getallTripInfo(entryInfo.getTripId(), false).get(0).getTripName());
+            clear.setVisibility(View.VISIBLE);
+            entryInfoupdate.setTripId(entryInfo.getTripId());
+        }
         setDateTimeField();
         edvia.setOnTouchListener(this);
         eddate.setOnTouchListener(this);
@@ -114,6 +116,7 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
             public void onClick(View v) {
                 edtrip.setText("");
                 clear.setVisibility(View.GONE);
+                entryInfoupdate.setTripId(null);
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -152,14 +155,14 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
                                 getaccountnameorId(edfor.getText().toString()).getAcc_webId());
                 }
 
-                if (tripinfo != null) {
-
+               /* if (tripinfo != null) {
                     entryInfoupdate.setTripId(tripinfo.getTripId());
                     clear.setVisibility(View.VISIBLE);
                 } else if (!edtrip.getText().toString().equals("")) {
                     entryInfoupdate.setTripId(entryInfo.getTripId());
                     clear.setVisibility(View.VISIBLE);
-                }
+                }*/
+
                 if (eddesc.getText().toString() != null && !eddesc.getText().toString().equals("")) {
                     entryInfoupdate.setDescription(eddesc.getText().toString());
                 }
@@ -172,11 +175,25 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
                 }
                 userService.update_entry(entryInfoupdate, summaryEntry.getEyId());
                 entryInfoupdate.setEmail(Prefs.getEmailId(ctx));
-                if (!edtrip.getText().toString().equals("") && entryInfoupdate.getTripId() != null) {
-                    userService.update_entry_trip(entryInfoupdate);
-                } else if (!edtrip.getText().toString().equals("") && entryInfo.getTripId() != null) {
-                    userService.addTripentrydata(entryInfoupdate);
+                if (edtrip.getText().toString() != null && !edtrip.getText().toString().equals("")) {
+                    if (entryInfoupdate.getTripId() != null && !entryInfoupdate.getTripId().equals("")) {
+                        if (entryInfo.getTripId() != null && !entryInfo.getTripId().equals("")) {
+                            userService.update_entry_trip(entryInfoupdate);
+                            userService.deleteEntry(Integer.parseInt(entryInfo.getTripId()), true, entryInfo.getEntryId());
+
+                        } else {
+
+                            userService.addTripentrydata(entryInfoupdate);
+                        }
+                    }
+                } else if (!entryInfo.getTripId().equals("null") && entryInfo.getTripId() != null) {
+                    userService.deleteEntry(Integer.parseInt(entryInfo.getTripId()), true, entryInfo.getEntryId());
                 }
+             /*   if (!edtrip.getText().toString().equals("") && entryInfoupdate.getTripId() != null && !entryInfoupdate.getTripId().equals("")) {
+                    userService.update_entry_trip(entryInfoupdate);
+                } else if (!edtrip.getText().toString().equals("") && entryInfo.getTripId() != null && !entryInfo.getTripId().equals("")) {
+                    userService.addTripentrydata(entryInfoupdate);
+                }*/
                 CommonUtility.showCustomAlertForContactsError(ctx, "Succesfully updated");
                 Intent detail = new Intent(ctx, SummaryInfo.class);
               /*  summaryEntry.setAccountName(userService.getaccountnameorId
@@ -256,8 +273,7 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
                             edvia.setText("Cash");
                             viaacc = userService.getaccountnameorId("Cash");
                             edvia.setEnabled(false);
-                        }
-                        else edvia.setEnabled(true);
+                        } else edvia.setEnabled(true);
                     }
                     edfor.requestFocus();
                     break;
@@ -270,6 +286,7 @@ public class EditEntry extends AppCompatActivity implements View.OnTouchListener
                 case 103:
                     tripinfo = (TripInfo) data.getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
                     if (tripinfo != null) {
+                        entryInfoupdate.setTripId(tripinfo.getTripId());
                         edtrip.setText(tripinfo.getTripName());
                         clear.setVisibility(View.VISIBLE);
                         edtrip.requestFocus();

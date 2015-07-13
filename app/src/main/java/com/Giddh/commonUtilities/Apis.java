@@ -245,6 +245,13 @@ public class Apis {
         Log.e("getting__trip_summary", "" + nameValuePair);
         response = HitUrl(httpPost);
         Log.e("getting_trip_summary", "" + response);
+        int maxLogSize = 1000;
+        for(int i = 0; i <= response.length() / maxLogSize; i++) {
+            int start = i * maxLogSize;
+            int end = (i+1) * maxLogSize;
+            end = end > response.length() ? response.length() : end;
+            Log.v("getting_trip_summary", response.substring(start, end));
+        }
         return response;
     }
 

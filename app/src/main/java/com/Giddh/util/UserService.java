@@ -188,7 +188,7 @@ public class UserService {
         String newString = new SimpleDateFormat("yyyy-MM-dd").format(date);
         values.put(DBHandler.TEY_DATE, newString);
         values.put(DBHandler.TEY_DESCRIPTION, dto.getDescription());
-        long i = sdb.update(DBHandler.TRIP_ENTRY_INFO, values, " tripID= '" + dto.getTripId() + "' AND company_id='" + dto.getCompanyId() + "'", null);
+        long i = sdb.update(DBHandler.TRIP_ENTRY_INFO, values, " tripID= '" + dto.getTripId() + "' AND company_id='" + dto.getCompanyId() + "' AND entryId='" + dto.getEntryId() + "'", null);
         Log.d("update in database", "update " + i + "" + dto.getAmount());
         return i;
     }

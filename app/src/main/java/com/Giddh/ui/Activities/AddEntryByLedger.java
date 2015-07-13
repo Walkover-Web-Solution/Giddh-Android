@@ -41,6 +41,7 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
     TripInfo tripinfo;
     Accounts viaacc;
     Boolean debit = false;
+    Accounts account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,20 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
         Mint.setUserIdentifier(Prefs.getEmailId(ctx));
         userService = UserService.getUserServiceInstance(ctx);
         summaryEntry = (SummaryAccount) getIntent().getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
-        if (summaryEntry.getGroupName() != null) {
+        account = userService.getaccountnameorId(summaryEntry.getAccountName());
+        if (!account.getGroupId().equals("2") && !account.getGroupId().equals("3")) {
+            entryInfo.setTransactionType("1");
+            entryInfo.setDebitAccount(summaryEntry.getAccountId());
+        } else {
+            entryInfo.setTransactionType(summaryEntry.getTransactionType());
+            entryInfo.setCreditAccount(summaryEntry.getAccountId());
+            /*if (entryInfo.getTransactionType().equals("0")) {
+                entryInfo.setDebitAccount(summaryEntry.getAccountId());
+            } else {
+                entryInfo.setCreditAccount(summaryEntry.getAccountId());
+            }*/
+        }
+      /*  if (summaryEntry.getGroupName() != null) {
             if (!summaryEntry.getGroupName().equals("Assets") && !summaryEntry.getGroupName().equals("Liability")) {
                 entryInfo.setTransactionType("1");
                 entryInfo.setCreditAccount(summaryEntry.getAccountId());
@@ -64,7 +78,7 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
         } else {
             entryInfo.setTransactionType(summaryEntry.getTransactionType());
             entryInfo.setDebitAccount(summaryEntry.getAccountId());
-        }
+        }*/
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -92,6 +106,7 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
             public void onClick(View v) {
                 edtrip.setText("");
                 clear.setVisibility(View.GONE);
+                entryInfo.setTripId(null);
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -101,16 +116,14 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
                         && !edvia.getText().toString().equals("") && edvia.getText().toString() != null) {
                     save.setEnabled(false);
                     entryInfo.setDate(eddate.getText().toString());
-                    entryInfo.setGroupId(summaryEntry.getGroupName());
                     entryInfo.setCompanyId(Prefs.getCompanyId(ctx));
                     entryInfo.setEmail(Prefs.getEmailId(ctx));
                     entryInfo.setAmount(Double.parseDouble(edamount.getText().toString()));
                     entryInfo.setDescription(eddesc.getText().toString());
-                    if (entryInfo.getTripId() != null && !entryInfo.getTripId().equals("")) {
+                    /*if (entryInfo.getTripId() != null && !entryInfo.getTripId().equals("") && !edtrip.getText().toString().equals("")) {
                         userService.addTripentrydata(entryInfo);
-                    }
+                    }*/
                     userService.addentrydata(entryInfo);
-
                     if (CommonUtility.isNetworkAvailable(ctx))
                         CommonUtility.syncwithServer(ctx);
                     Intent i = new Intent(ctx, SummaryInfo.class);
@@ -157,16 +170,15 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
                     break;
 
                 case R.id.via:
-                    if (debit)
+                  /*  if (debit)
                         entryInfo.setDebitAccount(null);
-                    else entryInfo.setCreditAccount(null);
+                    else entryInfo.setCreditAccount(null);*/
                     if (summaryEntry.getGroupName() != null) {
-                        if (summaryEntry.getGroupName().equals("Assets") || summaryEntry.getGroupName().equals("Liability")) {
+                        if (account.getGroupId().equals("2") || account.getGroupId().equals("3")) {
                             if (summaryEntry.getTransactionType().equals("0")) {
                                 Intent via = new Intent(ctx, SelectInfo.class);
                                 via.putExtra(VariableClass.Vari.SELECTEDDATA, 5);
-
-                                if (summaryEntry.getGroupName().equals("Assets") && !summaryEntry.getAccountName().equalsIgnoreCase("Cash")) {
+                                if (account.getGroupId().equals("3") && !account.getAccountName().equalsIgnoreCase("Cash")) {
                                     via.putExtra("CashInAtm", true);
                                 } else {
                                     via.putExtra("CashInAtm", false);
@@ -175,7 +187,7 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
                             } else {
                                 Intent via = new Intent(ctx, SelectInfo.class);
                                 via.putExtra(VariableClass.Vari.SELECTEDDATA, 6);
-                                if (summaryEntry.getGroupName().equals("Assets") && !summaryEntry.getAccountName().equalsIgnoreCase("Cash")) {
+                                if (summaryEntry.getGroupName().equals("3") && !account.getAccountName().equalsIgnoreCase("Cash")) {
                                     via.putExtra("CashInAtm", true);
                                 } else {
                                     via.putExtra("CashInAtm", false);
@@ -205,12 +217,19 @@ public class AddEntryByLedger extends AppCompatActivity implements View.OnTouchL
                     viaacc = (Accounts) data.getExtras().getSerializable(VariableClass.Vari.SELECTEDDATA);
                     if (viaacc != null) {
                         edvia.setText(viaacc.getAccountName());
+                     /*   edvia.setText(viaacc.getAccountName());
                         if (entryInfo.getDebitAccount() != null) {
                             entryInfo.setCreditAccount(viaacc.getAcc_webId());
                             debit = false;
                         } else {
                             entryInfo.setDebitAccount(viaacc.getAcc_webId());
                             debit = true;
+                        }*/
+                        if (!account.getGroupId().equals("2") && !account.getGroupId().equals("3")) {
+
+                            entryInfo.setCreditAccount(viaacc.getAcc_webId());
+                        } else {
+                            entryInfo.setDebitAccount(viaacc.getAcc_webId());
                         }
                     }
                     edvia.requestFocus();

@@ -1,6 +1,5 @@
 package com.Giddh.ui.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,9 +10,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
@@ -27,6 +23,7 @@ import com.Giddh.commonUtilities.CommonUtility;
 import com.Giddh.commonUtilities.FontTextView;
 import com.Giddh.commonUtilities.Prefs;
 import com.Giddh.commonUtilities.VariableClass;
+import com.Giddh.dtos.Accounts;
 import com.Giddh.dtos.SummaryAccount;
 import com.Giddh.dtos.SummaryEntry;
 import com.Giddh.util.UserService;
@@ -81,50 +78,51 @@ public class SummaryDetails extends AppCompatActivity {
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
         final ImageButton addtrans = (ImageButton) mCustomView
                 .findViewById(R.id.addtransactions);
+
         if (summaryAccount.getGroup() != null) {
             opening.setVisibility(View.GONE);
             closing.setVisibility(View.GONE);
             addtrans.setVisibility(View.GONE);
         }
         mTitleTextView.setText(CommonUtility.getfonttext(summaryAccount.getAccountName(), SummaryDetails.this));
-        String openingb = userService.getopening_balance(summaryAccount.getAccountName());
+
+      /*  String openingb = userService.getopening_balance(summaryAccount.getAccountName());
         Double val1 = userService.getclosing_bal(summaryAccount.getAccountId(), false);
         Double val2 = userService.getclosing_bal(summaryAccount.getAccountId(), true);
         Double closingb = Double.valueOf(openingb) - (val1 - val2);
         if (closingb < 0)
-            closingb = closingb * -1;
-
+            closingb = closingb * -1;*/
         //imageButton.setBackgroundResource(R.drawable.small_summary);
         addtrans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (summaryAccount.getGroupName() != null) {
-                    if (summaryAccount.getGroupName().equals("Assets") || summaryAccount.getGroupName().equals("Liability")) {
-                        Intent multi = new Intent(ctx, AskType.class);
-                        multi.putExtra(VariableClass.Vari.SELECTEDDATA, summaryAccount);
-                        startActivity(multi);
-                    }
+                Accounts account = userService.getaccountnameorId(summaryAccount.getAccountName());
+                if (account.getGroupId().equals("2") || account.getGroupId().equals("3")) {
+                    Intent multi = new Intent(ctx, AskType.class);
+                    multi.putExtra(VariableClass.Vari.SELECTEDDATA, summaryAccount);
+                    startActivity(multi);
                 } else {
                     Intent multi = new Intent(ctx, AddEntryByLedger.class);
                     multi.putExtra(VariableClass.Vari.SELECTEDDATA, summaryAccount);
                     startActivity(multi);
                 }
-
             }
         });
         actionBar.setCustomView(mCustomView);
         actionBar.setDisplayShowCustomEnabled(true);
         entries = new ArrayList<>();
+        new Summrydetailslist().execute();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));
-        if (summaryAccount.getGroup() != null) {
+
+       /* if (summaryAccount.getGroup() != null) {
             entries = userService.getEntryInfoIncomeExpense(summaryAccount.getTransactionType());
         } else
-            entries = userService.getEntryInfo(summaryAccount.getAccountId());
-        summaryDetailsAdapter = new SummaryDetailsAdapter(ctx, entries, false);
+            entries = userService.getEntryInfo(summaryAccount.getAccountId());*/
+      /*  summaryDetailsAdapter = new SummaryDetailsAdapter(ctx, entries, false);
         listExpandable.setAdapter(summaryDetailsAdapter);
         for (int i = 0; i < entries.size(); i++) {
             listExpandable.expandGroup(i);
-        }
+        }*/
         listExpandable.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
@@ -202,8 +200,8 @@ public class SummaryDetails extends AppCompatActivity {
             }
         });
 
-        opening.setText("Opening Balance =" + String.valueOf((openingb)));
-        closing.setText("Closing Balance =" + String.valueOf((closingb)));
+        /*opening.setText("Opening Balance =" + String.valueOf((openingb)));
+        closing.setText("Closing Balance =" + String.valueOf((closingb)));*/
     }
 
     public int GetPixelFromDips(float pixels) {
@@ -302,4 +300,45 @@ public class SummaryDetails extends AppCompatActivity {
 
         }
     }
+
+    class Summrydetailslist extends AsyncTask<String, Void, Void> {
+        String openingb;
+        Double closingb;
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            CommonUtility.dialog.dismiss();
+            opening.setText("Opening Balance =" + String.valueOf((openingb)));
+            closing.setText("Closing Balance =" + String.valueOf((closingb)));
+            summaryDetailsAdapter = new SummaryDetailsAdapter(ctx, entries, false);
+            listExpandable.setAdapter(summaryDetailsAdapter);
+            for (int i = 0; i < entries.size(); i++) {
+                listExpandable.expandGroup(i);
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            CommonUtility.show_PDialog(ctx);
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            openingb = userService.getopening_balance(summaryAccount.getAccountName());
+            Double val1 = userService.getclosing_bal(summaryAccount.getAccountId(), false);
+            Double val2 = userService.getclosing_bal(summaryAccount.getAccountId(), true);
+            closingb = Double.valueOf(openingb) - (val1 - val2);
+            if (closingb < 0)
+                closingb = closingb * -1;
+            if (summaryAccount.getGroup() != null) {
+                entries = userService.getEntryInfoIncomeExpense(summaryAccount.getTransactionType());
+            } else
+                entries = userService.getEntryInfo(summaryAccount.getAccountId());
+            return null;
+        }
+    }
+
 }

@@ -328,7 +328,6 @@ public class SummaryInfo extends AppCompatActivity {
         ArrayList<GroupInfo> groups = new ArrayList<>();
         ArrayList<Accounts> acconts = new ArrayList<>();
         ArrayList<SummaryGroup> closings = new ArrayList<>();
-        SummaryGroup summary;
         summaryAccounts = new ArrayList<>();
         groups = userService.getgroupInfo();
         for (int i = 0; i < groups.size(); i++) {
