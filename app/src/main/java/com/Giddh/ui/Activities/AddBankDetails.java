@@ -32,11 +32,10 @@ import java.util.ArrayList;
 public class AddBankDetails extends AppCompatActivity {
     EditText openingbal, bankName;
     ListView listviewbanks;
-    ImageButton save;
+    ImageButton save, addnewbank;
     ArrayList<Accounts> accounts;
     UserService userService;
     Context ctx;
-    TextView addnew;
     Accounts accounts1;
     AddBankAdapter addBankAdapter;
     Boolean Bankacc = false;
@@ -59,9 +58,9 @@ public class AddBankDetails extends AppCompatActivity {
         userService = UserService.getUserServiceInstance(ctx);
         openingbal = (EditText) findViewById(R.id.opening_bal);
         bankName = (EditText) findViewById(R.id.bank_name);
+        addnewbank = (ImageButton) findViewById(R.id.add_bank);
         listviewbanks = (ListView) findViewById(R.id.banks);
         save = (ImageButton) findViewById(R.id.save);
-        addnew = (TextView) findViewById(R.id.addnew);
         accounts = new ArrayList<>();
         Bankacc = getIntent().getExtras().getBoolean("value");
         back = getIntent().getExtras().getBoolean(VariableClass.Vari.SELECTEDDATA);
@@ -69,16 +68,25 @@ public class AddBankDetails extends AppCompatActivity {
             accounts = userService.getcountacc("3", "Cash");
             addBankAdapter = new AddBankAdapter(accounts, ctx);
             listviewbanks.setAdapter(addBankAdapter);
-            addnew.setText("Add new Bank account");
+            openingbal.setEnabled(false);
+            bankName.setEnabled(false);
             actionBar.setTitle(CommonUtility.getfonttext("Bank account", AddBankDetails.this));
         } else {
             accounts = userService.getcountacc("2", "Loan");
             addBankAdapter = new AddBankAdapter(accounts, ctx);
             listviewbanks.setAdapter(addBankAdapter);
-            addnew.setText("Add new Credit card");
+            addnewbank.setVisibility(View.GONE);
             actionBar.setTitle(CommonUtility.getfonttext("Credit card", AddBankDetails.this));
             bankName.setHint("Enter Credit card Name");
         }
+        addnewbank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ctx, AddBankAccount.class);
+                startActivity(i);
+
+            }
+        });
         listviewbanks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,12 +95,13 @@ public class AddBankDetails extends AppCompatActivity {
                 int bal = (int) accounts1.getOpeningBalance();
                 openingbal.setText("" + bal);
                 editmode = true;
+                openingbal.setEnabled(true);
+                bankName.setEnabled(true);
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save.setEnabled(false);
                 if (openingbal.getText().toString() != null && bankName.getText() != null) {
                     if (!editmode) {
                         if (Bankacc) {
@@ -143,6 +152,10 @@ public class AddBankDetails extends AppCompatActivity {
                             openingbal.setText("");
                             bankName.setText("");
                             listviewbanks.setAdapter(addBankAdapter);
+                            if (Bankacc) {
+                                openingbal.setEnabled(false);
+                                bankName.setEnabled(false);
+                            }
                             CommonUtility.showCustomAlertForContactsError(ctx, "Updated successfully");
                         } else {
                             CommonUtility.showCustomAlertForContactsError(ctx, "Field missing");
@@ -166,6 +179,7 @@ public class AddBankDetails extends AppCompatActivity {
             Intent i = new Intent(ctx, SettingsPage.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             startActivity(i);
             AddBankDetails.this.finish();
         }

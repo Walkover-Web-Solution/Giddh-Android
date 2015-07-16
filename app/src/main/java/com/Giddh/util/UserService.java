@@ -1007,6 +1007,8 @@ public class UserService {
             values.put(DBHandler.ACCOUNT_WEB_ID, acdto.getAcc_webId());
             values.put(DBHandler.ACCOUNT_UNIQUENAME, acdto.getUniqueName());
             values.put(DBHandler.ACCOUNT_SENDERID, acdto.getSenderId());
+            values.put(DBHandler.ACCOUNT_NUMBER, acdto.getBank_account_number());
+            values.put(DBHandler.ACCOUNT_IFSC_CODE, acdto.getBank_ifsc());
             i = sdb.insertWithOnConflict(DBHandler.ACCOUNTS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             Log.e("name=" + acdto.getAccountName(), " webid=" + acdto.getAcc_webId() + " grpId=" + acdto.getGroupId());
             Log.d("Insertion in database", "Insertion database " + i + "" + acdto.getAccountName());

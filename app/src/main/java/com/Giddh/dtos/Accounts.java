@@ -13,6 +13,24 @@ public class Accounts implements Serializable {
     String uniqueName;
     String senderId;
     double openingBalance;
+    String bank_account_number;
+    String bank_ifsc;
+
+    public String getBank_account_number() {
+        return bank_account_number;
+    }
+
+    public void setBank_account_number(String bank_account_number) {
+        this.bank_account_number = bank_account_number;
+    }
+
+    public String getBank_ifsc() {
+        return bank_ifsc;
+    }
+
+    public void setBank_ifsc(String bank_ifsc) {
+        this.bank_ifsc = bank_ifsc;
+    }
 
     public String getSenderId() {
         return senderId;

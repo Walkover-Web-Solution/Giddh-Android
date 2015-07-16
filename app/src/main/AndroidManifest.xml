@@ -46,13 +46,20 @@
         <activity
             android:name=".ui.Activities.SignUpHome"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
-
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name="com.Giddh.ui.Activities.HomeActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.Giddh.ui.Activities.BankList"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+            android:theme="@style/MyMaterialTheme"></activity>
+        <activity
+            android:name="com.Giddh.ui.Activities.AddBankAccount"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+            android:theme="@style/MyMaterialTheme"></activity>
         <activity
             android:name="com.Giddh.ui.Activities.GoogleLoginActivity"
             android:screenOrientation="portrait"></activity>

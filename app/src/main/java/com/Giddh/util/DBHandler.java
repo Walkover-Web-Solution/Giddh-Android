@@ -30,8 +30,11 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String ACCOUNT_WEB_ID = "account_id";
     public static final String ACCOUNT_UNIQUENAME = "uniqueName";
     public static final String ACCOUNT_SENDERID = "sender_id";
+    public static final String ACCOUNT_NUMBER = "bank_account_number";
+    public static final String ACCOUNT_IFSC_CODE = "bank_ifsc";
+
     String CREATE_ACCOUNTS = " CREATE TABLE" + " " + ACCOUNTS + "("
-            + ACCOUNT_SENDERID + " TEXT," + ACCOUNT_NAME + " TEXT," + ACCOUNT_UNIQUENAME + " TEXT," + ACCOUNT_WEB_ID + " INT," + ACCOUNT_OPENING_BAL + " TEXT," + ACCOUNT_GROUP_ID + " TEXT," + ACCOUNT_ID + " INTEGER  PRIMARY KEY AUTOINCREMENT " + ");";
+            + ACCOUNT_SENDERID + " TEXT,"+ ACCOUNT_NUMBER + " TEXT," + ACCOUNT_IFSC_CODE + " TEXT," + ACCOUNT_NAME + " TEXT," + ACCOUNT_UNIQUENAME + " TEXT," + ACCOUNT_WEB_ID + " INT," + ACCOUNT_OPENING_BAL + " TEXT," + ACCOUNT_GROUP_ID + " TEXT," + ACCOUNT_ID + " INTEGER  PRIMARY KEY AUTOINCREMENT " + ");";
     //column names for storing accounts
     public static final String SMSID = "sms_id";
     public static final String SMS_PRIMARY_ID = "_id";
@@ -105,7 +108,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TS_COMPANYID = "companyId";
 
     String CREATE_TRIP_SHARE = " CREATE TABLE" + " " + TRIP_SHARE + "("
-            + TS_COMPANYID + " TEXT,"+ TS_COMPANYNTYPE + " TEXT,"  + TS_TRIP_ID + " TEXT," + TS_COMPANYNAME + " TEXT," + TS_EMAIL + " TEXT," + TS_OWNER + " TEXT" + ",PRIMARY KEY(_email, companyId));";
+            + TS_COMPANYID + " TEXT," + TS_COMPANYNTYPE + " TEXT," + TS_TRIP_ID + " TEXT," + TS_COMPANYNAME + " TEXT," + TS_EMAIL + " TEXT," + TS_OWNER + " TEXT" + ",PRIMARY KEY(_email, companyId));";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, version);

@@ -4,62 +4,60 @@
     android:layout_height="match_parent"
     android:background="@color/bg_all">
 
-    <TextView
-        android:id="@+id/addnew"
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/bank_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="18sp"
-        android:layout_margin="10dp" />
-
-    <EditText
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:id="@+id/bank_name"
-        android:layout_below="@+id/addnew"
-        android:layout_width="match_parent"
         android:hint="Enter Bank Name"
         android:padding="10dp"
-        android:textColor="#0B8B8A"
-        android:background="@drawable/border_ed_common"
-        android:layout_height="wrap_content" />
+        android:textColor="#0B8B8A" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/opening_bal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/bank_name"
-        android:background="@drawable/border_ed_common"
-        android:padding="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:inputType="numberDecimal"
-        android:textColor="#0B8B8A"
-        android:id="@+id/opening_bal"
-        android:layout_width="match_parent"
         android:hint="Enter Opening balance"
-        android:layout_height="wrap_content" />
+        android:inputType="numberDecimal"
+        android:padding="10dp"
+        android:textColor="#0B8B8A" />
 
     <ListView
-        android:layout_below="@+id/opening_bal"
-        android:layout_above="@+id/foot"
-        android:padding="10dp"
+        android:id="@+id/banks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/banks"></ListView>
+        android:layout_above="@+id/foot"
+        android:layout_below="@+id/opening_bal"
+        android:padding="10dp"></ListView>
 
     <RelativeLayout
         android:id="@+id/foot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/orange_footer_head"
         android:layout_alignParentBottom="true"
+        android:background="@color/orange_footer_head"
         android:gravity="center_horizontal">
 
         <ImageButton
             android:id="@+id/save"
-            android:layout_margin="10dp"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_margin="10dp"
             android:background="@drawable/done_entry" />
+
+        <ImageButton
+            android:id="@+id/add_bank"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/save"
+            android:background="@drawable/add_round" />
     </RelativeLayout>
 </RelativeLayout>

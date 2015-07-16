@@ -5,7 +5,7 @@
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_all">
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,7 +29,6 @@
                     android:id="@+id/change_name1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
                     android:padding="5dp">
@@ -60,7 +59,7 @@
                     android:layout_height="0.3dp"
                     android:layout_below="@+id/change_name1"
                     android:layout_marginRight="10dp"
-                    android:background="@color/light_black" />
+                    android:background="@color/light_bg" />
 
                 <RelativeLayout
                     android:id="@+id/add_bnk1"
@@ -97,7 +96,7 @@
                     android:layout_height="0.3dp"
                     android:layout_below="@+id/add_bnk1"
                     android:layout_marginRight="10dp"
-                    android:background="@color/light_black" />
+                    android:background="@color/light_bg" />
 
                 <RelativeLayout
                     android:id="@+id/aso_trip1"
@@ -134,7 +133,7 @@
                     android:layout_height="0.3dp"
                     android:layout_below="@+id/aso_trip1"
                     android:layout_marginRight="10dp"
-                    android:background="@color/light_black" />
+                    android:background="@color/light_bg" />
 
                 <RelativeLayout
                     android:id="@+id/credit_card1"
@@ -171,7 +170,7 @@
                     android:layout_height="0.3dp"
                     android:layout_below="@+id/credit_card1"
                     android:layout_marginRight="10dp"
-                    android:background="@color/light_black" />
+                    android:background="@color/light_bg" />
 
                 <RelativeLayout
                     android:id="@+id/sync1"
@@ -210,7 +209,7 @@
                     android:layout_height="0.3dp"
                     android:layout_below="@+id/sync1"
                     android:layout_marginRight="10dp"
-                    android:background="@color/light_black" />
+                    android:background="@color/light_bg" />
 
                 <RelativeLayout
                     android:id="@+id/currency1"
@@ -250,7 +249,7 @@
                     android:layout_height="0.3dp"
                     android:layout_below="@+id/currency1"
                     android:layout_marginRight="10dp"
-                    android:background="@color/light_black" />
+                    android:background="@color/light_bg" />
 
                 <RelativeLayout
                     android:id="@+id/accounts1"
@@ -321,7 +320,7 @@
                     android:layout_height="0.3dp"
                     android:layout_below="@+id/accounts1"
                     android:layout_marginRight="10dp"
-                    android:background="@color/light_black" />
+                    android:background="@color/light_bg" />
 
             </RelativeLayout>
 

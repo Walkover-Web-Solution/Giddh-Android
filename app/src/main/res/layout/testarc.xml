@@ -165,7 +165,7 @@
                         android:id="@+id/expense_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="5dp"
                         android:gravity="right"
                         android:textColor="#FF6060"
                         android:textSize="18sp" />
@@ -176,7 +176,6 @@
                         android:layout_below="@+id/expense_amount"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-
                         android:layout_marginTop="10dp"
                         android:background="@color/light_black"
                         android:visibility="gone" />
@@ -204,7 +203,7 @@
                         android:id="@+id/income_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="5dp"
                         android:gravity="right"
                         android:textColor="#03A9F4"
                         android:textSize="18dp" />

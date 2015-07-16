@@ -240,6 +240,7 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.add_bnk:
                 Intent addbank = new Intent(ctx, AddBankDetails.class);
+                // Intent addbank = new Intent(ctx, BankList.class);
                 addbank.putExtra("value", true);
                 startActivity(addbank);
                 break;

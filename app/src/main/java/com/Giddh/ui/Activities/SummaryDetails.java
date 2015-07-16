@@ -111,9 +111,8 @@ public class SummaryDetails extends AppCompatActivity {
         actionBar.setCustomView(mCustomView);
         actionBar.setDisplayShowCustomEnabled(true);
         entries = new ArrayList<>();
-        new Summrydetailslist().execute();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.orange_footer_head)));
-
+        new Summrydetailslist().execute();
        /* if (summaryAccount.getGroup() != null) {
             entries = userService.getEntryInfoIncomeExpense(summaryAccount.getTransactionType());
         } else
@@ -242,8 +241,9 @@ public class SummaryDetails extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             // showErrorMessage(false, "");
-            CommonUtility.show_PDialog(ctx);
             super.onPreExecute();
+            CommonUtility.show_PDialog(ctx);
+
         }
 
         @Override
@@ -301,7 +301,7 @@ public class SummaryDetails extends AppCompatActivity {
         }
     }
 
-    class Summrydetailslist extends AsyncTask<String, Void, Void> {
+    class Summrydetailslist extends AsyncTask<Void, Void, Void> {
         String openingb;
         Double closingb;
 
@@ -316,7 +316,6 @@ public class SummaryDetails extends AppCompatActivity {
             for (int i = 0; i < entries.size(); i++) {
                 listExpandable.expandGroup(i);
             }
-
         }
 
         @Override
@@ -326,7 +325,7 @@ public class SummaryDetails extends AppCompatActivity {
         }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected Void doInBackground(Void... params) {
             openingb = userService.getopening_balance(summaryAccount.getAccountName());
             Double val1 = userService.getclosing_bal(summaryAccount.getAccountId(), false);
             Double val2 = userService.getclosing_bal(summaryAccount.getAccountId(), true);

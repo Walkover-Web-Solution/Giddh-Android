@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/select_bank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_account_no"
+        android:layout_marginTop="10dp"
+        android:hint="Select Bank"
+
+        android:textCursorDrawable="@drawable/cursur_color"
+        app:met_baseColor="@color/black"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/orange_default_color" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/add_account_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Account Number"
+        android:inputType="number"
+
+        android:textCursorDrawable="@drawable/cursur_color"
+        app:met_baseColor="@color/black"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/orange_default_color" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/add_ifsc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/select_bank"
+        android:layout_marginTop="10dp"
+        android:hint="IFSC code"
+        android:inputType="number"
+
+        android:textCursorDrawable="@drawable/cursur_color"
+        app:met_baseColor="@color/black"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/orange_default_color" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/add_opening_bal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_ifsc"
+        android:layout_marginTop="10dp"
+        android:hint="Opening Blance"
+        android:inputType="numberDecimal"
+
+        android:textCursorDrawable="@drawable/cursur_color"
+        app:met_baseColor="@color/black"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/orange_default_color" />
+
+    <RelativeLayout
+        android:id="@+id/foot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/orange_footer_head"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/done_entry" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

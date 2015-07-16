@@ -39,7 +39,7 @@
             android:id="@+id/details_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:childDivider="#9b9999"
+            android:childDivider="#eeeeee"
             android:divider="#C7C7C9"
             android:dividerHeight="0.1dp"
             android:listSelector="@drawable/list_selector_common"
